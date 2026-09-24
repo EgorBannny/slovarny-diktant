@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Словарный диктант</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Marck+Script&family=Gentium+Plus&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F9FF; --grid:#D6E2F4; --card:#FFFFFF;
+  --ink:#22308F; --pencil:#6F7686; --text:#1A1E2B;
+  --margin:#E2574A; --line:#C3D0E6;
+  --ok:#16744C; --ok-bg:#DDF3E8; --bad:#B3302A; --bad-bg:#FBE4E1;
+  --btn-text:#FFFFFF;
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121828; --grid:#1C2740; --card:#1A2136;
+    --ink:#A3B3FF; --pencil:#9AA2B6; --text:#E6E9F5;
+    --margin:#D0503F; --line:#2E3A5C;
+    --ok:#6FD8A4; --ok-bg:#12332A; --bad:#FF9088; --bad-bg:#3A1C1F;
+    --btn-text:#0F1530;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121828; --grid:#1C2740; --card:#1A2136;
+  --ink:#A3B3FF; --pencil:#9AA2B6; --text:#E6E9F5;
+  --margin:#D0503F; --line:#2E3A5C;
+  --ok:#6FD8A4; --ok-bg:#12332A; --bad:#FF9088; --bad-bg:#3A1C1F;
+  --btn-text:#0F1530;
+}
+
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+[hidden]{display:none!important}
+body{
+  margin:0;min-height:100%;
+  background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size:24px 24px;
+  color:var(--text);
+  font-family:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;
+  font-size:17px;line-height:1.45;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:800px;margin:0 auto;padding:0 18px 80px 48px;position:relative}
+.wrap::before{content:"";position:absolute;left:28px;top:0;bottom:0;width:2px;background:var(--margin);opacity:.85}
+
+.top{padding-top:22px}
+.mark{
+  font-family:"Marck Script","Segoe Script","Bradley Hand",cursive;
+  font-weight:400;font-size:clamp(2.3rem,8vw,3.3rem);line-height:1.05;
+  color:var(--ink);margin:0;
+}
+.sub{margin:4px 0 0;color:var(--pencil);font-size:.95rem}
+
+.tabs{
+  position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
+  display:flex;gap:4px;margin:14px 0 22px;
+  background:var(--paper);border-bottom:1.5px solid var(--line);
+}
+.tab{
+  font:inherit;font-weight:600;color:var(--pencil);background:transparent;border:0;
+  padding:12px 12px 10px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px;
+}
+.tab.on{color:var(--ink);border-bottom-color:var(--ink)}
+.tab:focus-visible,.btn:focus-visible,.link:focus-visible,.card:focus-visible{outline:3px solid var(--margin);outline-offset:2px}
+
+h2{font-size:1.25rem;margin:0 0 10px;color:var(--text)}
+.note{color:var(--pencil);font-size:.92rem;margin:8px 0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* cards */
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.tools input,.tools select{
+  font:inherit;color:var(--text);background:var(--card);
+  border:1.5px solid var(--line);border-radius:6px;padding:9px 12px;min-width:0;
+}
+.tools input{flex:1 1 200px}
+.tools input:focus-visible,.tools select:focus-visible{outline:3px solid var(--margin);outline-offset:1px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.card .en{font-weight:700;font-size:1.22rem;line-height:1.25;color:var(--ink);overflow-wrap:anywhere}
+.card .ipa{font-family:"Gentium Plus","Noto Serif","DejaVu Serif",serif;color:var(--pencil);font-size:1.08rem;margin-top:2px;overflow-wrap:anywhere}
+.card .ru{margin-top:6px;overflow-wrap:anywhere}
+.study .card{cursor:pointer}
+.study-ru .card:not(.open) .ru,
+.study-en .card:not(.open) .en,
+.study-en .card:not(.open) .ipa{color:transparent;text-shadow:0 0 10px var(--text);user-select:none}
+.empty{color:var(--pencil);padding:20px 0}
+
+/* buttons, chips */
+.btn{
+  font:inherit;font-weight:600;color:var(--ink);background:transparent;
+  border:2px solid var(--ink);border-radius:6px;padding:10px 18px;cursor:pointer;
+}
+.btn.primary{background:var(--ink);color:var(--btn-text)}
+.btn:disabled{opacity:.5;cursor:default}
+.link{font:inherit;color:var(--pencil);background:none;border:0;padding:6px 0;text-decoration:underline;cursor:pointer}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+fieldset{border:0;margin:0 0 16px;padding:0}
+legend{padding:0;margin-bottom:8px;font-weight:600}
+.chip{position:relative;display:inline-block;margin:0 6px 8px 0}
+.chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.chip span{display:inline-block;padding:8px 14px;border:2px solid var(--line);border-radius:6px;background:var(--card)}
+.chip input:checked+span{border-color:var(--ink);background:var(--ink);color:var(--btn-text)}
+.chip input:focus-visible+span{outline:3px solid var(--margin);outline-offset:2px}
+.chip input:disabled+span{opacity:.45}
+.check{display:flex;gap:10px;align-items:flex-start;margin:4px 0 12px;cursor:pointer}
+.check input{margin-top:5px;width:18px;height:18px;accent-color:var(--ink)}
+
+/* dictation */
+.panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px}
+.prog{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.95rem;color:var(--pencil);margin-bottom:6px}
+.bar{height:5px;background:var(--line);border-radius:3px;margin-bottom:16px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink)}
+.dirlabel{margin:0;color:var(--pencil);font-size:.95rem}
+.prompt{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:700;line-height:1.2;color:var(--ink);margin:6px 0 18px;overflow-wrap:anywhere}
+.answer{
+  width:100%;font:inherit;font-size:1.35rem;color:var(--text);
+  background:transparent;border:0;border-bottom:2px solid var(--ink);border-radius:0;
+  padding:8px 2px;outline:none;
+}
+.answer:focus-visible{border-bottom-color:var(--margin);box-shadow:0 2px 0 var(--margin)}
+.verdict{display:inline-block;font-weight:700;font-size:1.15rem;padding:5px 12px;border-radius:6px;margin-bottom:14px}
+.verdict.ok{background:var(--ok-bg);color:var(--ok)}
+.verdict.bad{background:var(--bad-bg);color:var(--bad)}
+.cmp{margin:14px 0 4px;font-size:1.08rem}
+.cmp div{margin:4px 0;overflow-wrap:anywhere}
+.cmp b{display:inline-block;min-width:6.2em;color:var(--pencil);font-weight:500}
+mark{background:none;color:inherit;white-space:pre}
+mark.bad{background:var(--bad-bg);color:var(--bad);text-decoration:line-through}
+mark.miss{background:var(--ok-bg);color:var(--ok);font-weight:700}
+.final{text-align:center;padding:10px 0 6px}
+.grade{
+  font-family:"Marck Script","Segoe Script","Bradley Hand",cursive;
+  font-size:clamp(7rem,32vw,10rem);line-height:1;color:var(--margin);
+  display:inline-block;transform:rotate(-7deg);margin:6px 0 0;
+}
+.gradeword{font-size:1.2rem;font-weight:600;margin:0}
+.misses{margin-top:22px;display:grid;gap:12px}
+.miss-item .said{font-size:.95rem;color:var(--pencil);margin:0 0 6px}
+
+/* sheet */
+.sheetimg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff;margin-top:14px}
+
+@media (max-width:420px){
+  .wrap{padding-left:40px;padding-right:14px}
+  .wrap::before{left:22px}
+  .panel{padding:16px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="mark">Словарный диктант</h1>
+    <p class="sub" id="subline"></p>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Разделы">
+    <button class="tab on" role="tab" id="t-cards" data-tab="cards" aria-selected="true" aria-controls="tab-cards">Карточки</button>
+    <button class="tab" role="tab" id="t-test" data-tab="test" aria-selected="false" aria-controls="tab-test">Диктант</button>
+    <button class="tab" role="tab" id="t-sheet" data-tab="sheet" aria-selected="false" aria-controls="tab-sheet">Шпаргалка</button>
+  </nav>
+
+  <main>
+    <section id="tab-cards" role="tabpanel" aria-labelledby="t-cards">
+      <div class="tools">
+        <label class="sr" for="q">Поиск по словам</label>
+        <input id="q" type="search" placeholder="Поиск: слово или перевод" autocomplete="off">
+        <label class="sr" for="mode">Что показывать</label>
+        <select id="mode">
+          <option value="all">Показывать всё</option>
+          <option value="hide-ru">Скрыть русский</option>
+          <option value="hide-en">Скрыть английский</option>
+        </select>
+      </div>
+      <p class="note" id="cardsNote"></p>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section id="tab-test" role="tabpanel" aria-labelledby="t-test" hidden>
+      <div id="dictation"></div>
+    </section>
+
+    <section id="tab-sheet" role="tabpanel" aria-labelledby="t-sheet" hidden>
+      <h2>Шпаргалка на одной картинке</h2>
+      <p class="note">Все слова: английский, транскрипция и перевод.</p>
+      <fieldset>
+        <legend class="sr">Число колонок</legend>
+        <label class="chip"><input type="radio" name="cols" value="2" checked><span>2 колонки, для телефона</span></label>
+        <label class="chip"><input type="radio" name="cols" value="3"><span>3 колонки, для печати</span></label>
+      </fieldset>
+      <div class="row" style="margin-top:0">
+        <button class="btn primary" id="dlBtn" hidden>Скачать картинку</button>
+      </div>
+      <p class="note" id="dlNote" role="status"></p>
+      <img id="sheetImg" class="sheetimg" alt="Шпаргалка со всеми словами: английский, транскрипция и перевод" hidden>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Данные: [английский, транскрипция, русский, {доп. варианты}] ---------- */
+var RAW = [
+ ["linear programming","[ˈlɪniə ˈprəʊɡræmɪŋ]","линейное программирование"],
+ ["object-oriented programming","[ˈɒbdʒɪkt ˈɔːriəntɪd ˈprəʊɡræmɪŋ]","объектно-ориентированное программирование"],
+ ["visual programming","[ˈvɪʒuəl ˈprəʊɡræmɪŋ]","визуальное программирование"],
+ ["chaotic programming","[keɪˈɒtɪk ˈprəʊɡræmɪŋ]","хаотическое программирование"],
+ ["logical programming","[ˈlɒdʒɪkl ˈprəʊɡræmɪŋ]","логическое программирование",{enAcc:["logical programming","logic programming"]}],
+ ["functional programming","[ˈfʌŋkʃənl ˈprəʊɡræmɪŋ]","функциональное программирование"],
+ ["dynamic programming","[daɪˈnæmɪk ˈprəʊɡræmɪŋ]","динамическое программирование"],
+ ["structured programming","[ˈstrʌktʃəd ˈprəʊɡræmɪŋ]","структурированное программирование"],
+ ["mathematical programming","[ˌmæθəˈmætɪkl ˈprəʊɡræmɪŋ]","математическое программирование"],
+ ["system programming","[ˈsɪstəm ˈprəʊɡræmɪŋ]","системное программирование"],
+ ["algorithm","[ˈælɡərɪðəm]","последовательность программных действий"],
+ ["routine","[ruːˈtiːn]","стандартная программа"],
+ ["subroutine","[ˈsʌbruːˌtiːn]","подпрограмма"],
+ ["control program","[kənˈtrəʊl ˈprəʊɡræm]","программа управления"],
+ ["diagram(m, e, me)","[ˈdaɪəɡræm]","строить (чертить) схему, чертёж",
+   {enAcc:["diagram(m, e, me)","diagram"],ruAcc:["строить схему","чертить схему","чертёж","строить (чертить) схему, чертёж"]}],
+ ["flow-chart","[ˈfləʊ tʃɑːt]","блок-схема"],
+ ["procedure","[prəˈsiːdʒə]","процедура"],
+ ["function","[ˈfʌŋkʃn]","функция"],
+ ["loop","[luːp]","цикл"],
+ ["debug","[ˌdiːˈbʌɡ]","отлаживать / отладка"],
+ ["debugger","[ˌdiːˈbʌɡə]","отладчик"],
+ ["debugging","[ˌdiːˈbʌɡɪŋ]","процесс отладки"],
+ ["technique","[tekˈniːk]","приём, способ, метод"],
+ ["define","[dɪˈfaɪn]","ставить задачу"],
+ ["invalidate","[ɪnˈvælɪdeɪt]","выводить из строя"],
+ ["computer manual","[kəmˈpjuːtə ˈmænjuəl]","руководство по пользованию компьютером"],
+ ["coding","[ˈkəʊdɪŋ]","процесс кодирования"],
+ ["actual coding","[ˈæktʃuəl ˈkəʊdɪŋ]","действительное кодирование (кодирование, которое осуществляется, когда о нём говорят)"],
+ ["rest of the bits","[rest əv ðə bɪts]","оставшиеся биты"],
+ ["octal number","[ˈɒktl ˈnʌmbə]","восьмеричное число"],
+ ["constant","[ˈkɒnstənt]","постоянная величина"],
+ ["variable","[ˈveəriəbl]","переменная величина"],
+ ["cell","[sel]","ячейка (на аппаратном уровне)"],
+ ["mesh","[meʃ]","ячейка (на программном уровне)"],
+ ["temporary","[ˈtempərəri]","рабочая ячейка памяти"],
+ ["jump","[dʒʌmp]","переходить / переход"],
+ ["job","[dʒɒb]","задача"],
+ ["job control","[dʒɒb kənˈtrəʊl]","управление потоком заданий"],
+ ["SRU (system resident unit)","[ˌes ɑːr ˈjuː] [ˈsɪstəm ˈrezɪdənt ˈjuːnɪt]","системное резидентное устройство"],
+ ["supervisor","[ˈsjuːpəvaɪzə]","наблюдатель"],
+ ["library","[ˈlaɪbrəri]","библиотека"],
+ ["RL (relocatable library)","[ˌɑːr ˈel] [ˌriːləʊˈkeɪtəbl ˈlaɪbrəri]","перемещаемая библиотека"],
+ ["CIL (core image library)","[ˌsiː aɪ ˈel] [kɔː ˈɪmɪdʒ ˈlaɪbrəri]","библиотека абсолютных модулей"],
+ ["SSL (source statement library)","[ˌes es ˈel] [sɔːs ˈsteɪtmənt ˈlaɪbrəri]","библиотека исходных приложений"],
+ ["librarian","[laɪˈbreəriən]","программа «Библиотекарь»"],
+ ["linkage editor","[ˈlɪŋkɪdʒ ˈedɪtə]","программа «Редактор связей»"],
+ ["IPL (initial program loading)","[ˌaɪ piː ˈel] [ɪˈnɪʃl ˈprəʊɡræm ˈləʊdɪŋ]","начальная загрузка программ"],
+ ["tools","[tuːlz]","инструменты"],
+ ["shorthand","[ˈʃɔːthænd]","стенограмма, стенография, краткая запись чего-либо"],
+ ["processor","[ˈprəʊsesə]","программа «Переводчик»"],
+ ["interrupt","[ˌɪntəˈrʌpt]","прерывать / прерывание"],
+ ["interruption","[ˌɪntəˈrʌpʃn]","прерывание / результат"],
+ ["turn","[tɜːn]","передавать"],
+ ["initiate","[ɪˈnɪʃieɪt]","выдвигать (инициировать)",
+   {ruAcc:["выдвигать","инициировать","выдвигать (инициировать)"]}]
+];
+var WORDS = RAW.map(function(r,i){
+  var w = {id:i+1, en:r[0], ipa:r[1], ru:r[2]};
+  if(r[3]) for(var k in r[3]) w[k]=r[3][k];
+  return w;
+});
+
+/* ---------- Утилиты ---------- */
+function $(s){return document.querySelector(s)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function norm(s){
+  return String(s).toLowerCase().replace(/ё/g,'е')
+    .replace(/[«»“”"']/g,'').replace(/[–—−]/g,'-')
+    .replace(/\s*([\/,])\s*/g,'$1').replace(/\s+/g,' ').trim();
+}
+function lev(a,b){
+  var m=a.length,n=b.length,p=[],i,j;
+  for(j=0;j<=n;j++)p[j]=j;
+  for(i=1;i<=m;i++){var c=[i];for(j=1;j<=n;j++){c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1))}p=c}
+  return p[n];
+}
+function gradeFor(errors){return errors<=1?5:errors===2?4:errors===3?3:2}
+function pluralOshibok(n){
+  var m10=n%10,m100=n%100;
+  if(m10===1&&m100!==11)return 'ошибка';
+  if(m10>=2&&m10<=4&&(m100<10||m100>=20))return 'ошибки';
+  return 'ошибок';
+}
+
+/* ---------- Проверка ответа ---------- */
+function parenSplit(s){var m=s.match(/^(.*?)\s*\(([^)]*)\)\s*$/);return m?{main:m[1].trim(),inner:m[2].trim()}:null}
+function acceptEn(w){
+  if(w.enAcc) return w.enAcc;
+  var p=parenSplit(w.en);
+  return p?[w.en,p.main,p.inner]:[w.en];
+}
+function acceptRu(w,strict){
+  var main=w.ru.replace(/\s*\([^)]*\)/g,'').replace(/\s+/g,' ').trim();
+  var list=[w.ru,main];
+  if(!strict){
+    if(w.ruAcc) list=list.concat(w.ruAcc);
+    else list=list.concat(main.split(/\s*[\/,]\s*/));
+  }
+  if(/«/.test(w.ru)) list=list.concat(list.map(function(s){return s.replace(/^программа\s+/i,'')}));
+  return list;
+}
+function judge(q,text,strict){
+  var cands=(q.dir==='ru2en'?acceptEn(q.w):acceptRu(q.w,strict))
+    .map(function(s){return s.trim()}).filter(Boolean);
+  var n=norm(text);
+  var ok=cands.some(function(c){return norm(c)===n});
+  var best=cands[0],bd=1e9;
+  cands.forEach(function(c){var d=lev(norm(c),n);if(d<bd){bd=d;best=c}});
+  return {ok:ok,best:best};
+}
+function nc(ch){return ch.toLowerCase().replace('ё','е')}
+function diff(user,target){
+  var a=Array.from(user.trim().replace(/\s+/g,' ')),b=Array.from(target);
+  var n=a.length,m=b.length,i,j,dp=[];
+  for(i=0;i<=n;i++){dp.push(new Array(m+1).fill(0))}
+  for(i=n-1;i>=0;i--)for(j=m-1;j>=0;j--){
+    dp[i][j]=nc(a[i])===nc(b[j])?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  }
+  var ah='',bh='';i=0;j=0;
+  while(i<n&&j<m){
+    if(nc(a[i])===nc(b[j])){ah+=esc(a[i]);bh+=esc(b[j]);i++;j++}
+    else if(dp[i+1][j]>=dp[i][j+1]){ah+='<mark class="bad">'+esc(a[i])+'</mark>';i++}
+    else{bh+='<mark class="miss">'+esc(b[j])+'</mark>';j++}
+  }
+  while(i<n){ah+='<mark class="bad">'+esc(a[i])+'</mark>';i++}
+  while(j<m){bh+='<mark class="miss">'+esc(b[j])+'</mark>';j++}
+  return {ah:ah,bh:bh};
+}
+
+/* ---------- Статистика (слабые слова) ---------- */
+var KEY='slovarny-diktant-stats-v1';
+var stats={};
+try{stats=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){stats={}}
+function saveStats(){try{localStorage.setItem(KEY,JSON.stringify(stats))}catch(e){}}
+function weakWords(){
+  return WORDS.filter(function(w){var s=stats[w.id];return s&&s.miss>0&&s.streak<2});
+}
+function record(w,ok){
+  var s=stats[w.id]||(stats[w.id]={miss:0,streak:0});
+  if(ok){s.streak++}else{s.miss++;s.streak=0}
+  saveStats();
+}
+
+/* ---------- Карточки ---------- */
+function cardHTML(w,cls,attrs){
+  return '<div class="card '+(cls||'')+'"'+(attrs||'')+'>'+
+    '<div class="en" lang="en">'+esc(w.en)+'</div>'+
+    '<div class="ipa">'+esc(w.ipa)+'</div>'+
+    '<div class="ru" lang="ru">'+esc(w.ru)+'</div></div>';
+}
+function renderCards(){
+  var q=norm($('#q').value), mode=$('#mode').value;
+  var list=WORDS.filter(function(w){
+    if(!q)return true;
+    return norm(w.en).indexOf(q)>-1||norm(w.ru).indexOf(q)>-1||norm(w.ipa).indexOf(q)>-1;
+  });
+  var grid=$('#grid');
+  grid.className='grid'+(mode==='all'?'':' study study-'+mode.slice(5));
+  grid.innerHTML=list.length?list.map(function(w){
+    return cardHTML(w,'',mode==='all'?'':' tabindex="0"');
+  }).join(''):'<p class="empty">Ничего не найдено. Попробуй другое слово.</p>';
+  $('#cardsNote').textContent=mode==='all'
+    ?'Показано слов: '+list.length+' из '+WORDS.length+'.'
+    :'Нажми на карточку, чтобы открыть скрытую сторону. Показано слов: '+list.length+'.';
+}
+$('#q').addEventListener('input',renderCards);
+$('#mode').addEventListener('change',renderCards);
+$('#grid').addEventListener('click',function(e){
+  var c=e.target.closest('.card');
+  if(c&&$('#grid').classList.contains('study'))c.classList.toggle('open');
+});
+$('#grid').addEventListener('keydown',function(e){
+  if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('card')&&$('#grid').classList.contains('study')){
+    e.preventDefault();e.target.classList.toggle('open');
+  }
+});
+
+/* ---------- Диктант ---------- */
+var root=$('#dictation');
+var opts={count:'10',dir:'mixed',strict:false};
+var S=null;
+
+function chip(name,val,label,disabled){
+  return '<label class="chip"><input type="radio" name="'+name+'" value="'+val+'"'+
+    (String(opts[name])===val?' checked':'')+(disabled?' disabled':'')+'><span>'+esc(label)+'</span></label>';
+}
+function renderSetup(){
+  S=null;
+  var weak=weakWords();
+  if(opts.count==='weak'&&!weak.length)opts.count='10';
+  var hasStats=Object.keys(stats).length>0;
+  root.innerHTML=
+    '<div class="panel">'+
+    '<h2>Новый диктант</h2>'+
+    '<fieldset><legend>Сколько слов</legend>'+
+      chip('count','10','10')+chip('count','20','20')+chip('count','all','Все '+WORDS.length)+
+      chip('count','weak','Слабые ('+weak.length+')',!weak.length)+
+    '</fieldset>'+
+    '<fieldset><legend>Что переводить</legend>'+
+      chip('dir','mixed','Вперемешку')+chip('dir','ru2en','Русский → английский')+chip('dir','en2ru','Английский → русский')+
+    '</fieldset>'+
+    '<label class="check"><input type="checkbox" id="strict"'+(opts.strict?' checked':'')+'><span>Строго: русский перевод писать целиком, со всеми вариантами через запятую или косую черту</span></label>'+
+    '<p class="note">Ошибкой считается каждое слово, которое переведено неверно или с опечаткой. 0–1 ошибка: оценка 5. 2 ошибки: 4. 3 ошибки: 3. 4 и больше: 2. Регистр букв и «ё» вместо «е» не считаются ошибкой.</p>'+
+    '<div class="row"><button class="btn primary" id="start">Начать диктант</button></div>'+
+    '</div>'+
+    (hasStats?'<p><button class="link" id="resetStats">Сбросить статистику слабых слов</button></p>':'');
+}
+function startSession(list){
+  var pool=shuffle(list.slice());
+  var n=(opts.count==='all'||opts.count==='weak')?pool.length:Math.min(parseInt(opts.count,10),pool.length);
+  S={
+    queue:pool.slice(0,n).map(function(w){
+      return {w:w,dir:opts.dir==='mixed'?(Math.random()<0.5?'ru2en':'en2ru'):opts.dir};
+    }),
+    i:0,errors:0,results:[],last:null,strict:opts.strict
+  };
+  renderQuestion();
+}
+function progressHTML(upto){
+  var total=S.queue.length;
+  return '<div class="prog"><span>Слово '+(S.i+1)+' из '+total+'</span>'+
+    '<span>Ошибок: '+S.errors+'. Оценка сейчас: '+gradeFor(S.errors)+'</span></div>'+
+    '<div class="bar"><i style="width:'+Math.round(upto/total*100)+'%"></i></div>';
+}
+function renderQuestion(){
+  var q=S.queue[S.i], toEn=q.dir==='ru2en';
+  root.innerHTML=
+    progressHTML(S.i)+
+    '<div class="panel">'+
+      '<p class="dirlabel">'+(toEn?'Переведи на английский':'Переведи на русский')+'</p>'+
+      '<p class="prompt" lang="'+(toEn?'ru':'en')+'">'+esc(toEn?q.w.ru:q.w.en)+'</p>'+
+      '<form id="af" autocomplete="off">'+
+        '<label class="sr" for="ans">Твой перевод</label>'+
+        '<input id="ans" class="answer" lang="'+(toEn?'en':'ru')+'" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="done" autocomplete="off">'+
+        '<div class="row"><button class="btn primary" type="submit">Проверить</button>'+
+        '<button class="btn" type="button" id="idk">Не знаю</button></div>'+
+      '</form>'+
+    '</div>'+
+    '<p><button class="link" id="quit">Закончить диктант</button></p>';
+  $('#ans').focus();
+}
+function answer(text,gaveUp){
+  var q=S.queue[S.i];
+  var res=gaveUp?{ok:false,best:null}:judge(q,text,S.strict);
+  if(!res.ok)S.errors++;
+  record(q.w,res.ok);
+  var item={q:q,ok:res.ok,text:gaveUp?'':text.trim(),best:res.best};
+  S.results.push(item);
+  S.last=item;
+  renderResult();
+}
+function renderResult(){
+  var r=S.last, last=S.i===S.queue.length-1;
+  var cmp='';
+  if(!r.ok&&r.text){
+    var d=diff(r.text,r.best);
+    cmp='<div class="cmp"><div><b>Ты написал:</b> '+d.ah+'</div><div><b>Правильно:</b> '+d.bh+'</div></div>';
+  }
+  root.innerHTML=
+    progressHTML(S.i+1)+
+    '<div class="panel">'+
+      '<div class="verdict '+(r.ok?'ok':'bad')+'">'+(r.ok?'✓ Верно':(r.text?'✕ Ошибка':'✕ Не знаю'))+'</div>'+
+      cardHTML(r.q.w)+cmp+
+      '<div class="row"><button class="btn primary" id="next">'+(last?'Показать оценку':'Дальше')+'</button></div>'+
+    '</div>'+
+    '<p><button class="link" id="quit">Закончить диктант</button></p>';
+  $('#next').focus();
+}
+function renderFinal(){
+  var g=gradeFor(S.errors), total=S.queue.length;
+  var words={5:'Отлично',4:'Хорошо',3:'Удовлетворительно',2:'Нужно повторить'};
+  var wrong=S.results.filter(function(r){return !r.ok});
+  var html='<div class="panel final">'+
+    '<p class="gradeword">'+words[g]+'</p>'+
+    '<div class="grade" aria-label="Оценка '+g+'">'+g+'</div>'+
+    '<p>'+S.errors+' '+pluralOshibok(S.errors)+' из '+total+' слов</p>'+
+    '<div class="row" style="justify-content:center">'+
+      (wrong.length?'<button class="btn primary" id="retry">Повторить ошибки</button>':'')+
+      '<button class="btn'+(wrong.length?'':' primary')+'" id="again">Новый диктант</button>'+
+    '</div></div>';
+  if(wrong.length){
+    html+='<h2 style="margin-top:24px">Над чем поработать</h2><div class="misses">'+
+      wrong.map(function(r){
+        return '<div class="miss-item">'+
+          (r.text?'<p class="said">Ты написал: '+esc(r.text)+'</p>':'<p class="said">Не знал</p>')+
+          cardHTML(r.q.w)+'</div>';
+      }).join('')+'</div>';
+  }
+  root.innerHTML=html;
+  window.scrollTo(0,0);
+  var b=$('#retry')||$('#again'); if(b)b.focus();
+}
+
+root.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.name==='count'||t.name==='dir')opts[t.name]=t.value;
+  if(t.id==='strict')opts.strict=t.checked;
+});
+root.addEventListener('submit',function(e){
+  e.preventDefault();
+  if(!S||e.target.id!=='af')return;
+  var v=$('#ans').value;
+  if(!v.trim()){$('#ans').focus();return}
+  answer(v,false);
+});
+root.addEventListener('click',function(e){
+  var id=e.target.id;
+  if(id==='start'){startSession(opts.count==='weak'?weakWords():WORDS)}
+  else if(id==='idk'){answer('',true)}
+  else if(id==='next'){S.i++;if(S.i>=S.queue.length)renderFinal();else renderQuestion()}
+  else if(id==='quit'||id==='again'){renderSetup()}
+  else if(id==='retry'){
+    var list=S.results.filter(function(r){return !r.ok}).map(function(r){return r.q.w});
+    var keep=opts.count;opts.count='all';startSession(list);opts.count=keep;
+  }
+  else if(id==='resetStats'){stats={};saveStats();renderSetup()}
+});
+
+/* ---------- Шпаргалка (картинка) ---------- */
+var sheetCanvas=null, sheetCols=2, sheetBusy=false, dl=null;
+
+function wrapText(ctx,text,maxW){
+  var words=text.split(' '),lines=[],line='';
+  words.forEach(function(w){
+    var t=line?line+' '+w:w;
+    if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w}else line=t;
+  });
+  if(line)lines.push(line);
+  return lines;
+}
+async function buildSheet(){
+  if(sheetBusy)return; sheetBusy=true;
+  var note=$('#dlNote'); note.textContent='Рисую шпаргалку…';
+  try{
+    if(document.fonts&&document.fonts.load){
+      await Promise.all([
+        document.fonts.load('700 34px "Golos Text"','Аaбb'),
+        document.fonts.load('400 29px "Golos Text"','Аaбb'),
+        document.fonts.load('28px "Gentium Plus"','ˈɪəʊː'),
+        document.fonts.load('80px "Marck Script"','Шпаргалка')
+      ]).catch(function(){});
+    }
+    var cols=sheetCols, W=cols===2?1500:2100, pad=76, gap=60;
+    var colW=(W-pad*2-gap*(cols-1))/cols;
+    var FEN='700 34px "Golos Text",system-ui,sans-serif';
+    var FIPA='28px "Gentium Plus","Noto Serif","DejaVu Serif",serif';
+    var FRU='400 29px "Golos Text",system-ui,sans-serif';
+    var LH={en:44,ipa:38,ru:39}, PT=14, PB=18;
+    var probe=document.createElement('canvas').getContext('2d');
+
+    var items=WORDS.map(function(w){
+      probe.font=FEN; var enLines=wrapText(probe,w.en,colW);
+      var lastEnW=probe.measureText(enLines[enLines.length-1]).width;
+      probe.font=FIPA; var ipaW=probe.measureText(w.ipa).width;
+      var ops=[],y=PT;
+      enLines.forEach(function(l,i){ops.push({t:l,f:FEN,c:'#1F2F8F',x:0,y:y+LH.en*0.78});y+=LH.en});
+      var inline=ipaW+18+lastEnW<=colW;
+      var ipaLines;
+      if(inline){
+        ops.push({t:w.ipa,f:FIPA,c:'#6F7686',x:lastEnW+18,y:y-LH.en*0.22});
+      }else{
+        ipaLines=wrapText(probe,w.ipa,colW);
+        ipaLines.forEach(function(l){ops.push({t:l,f:FIPA,c:'#6F7686',x:0,y:y+LH.ipa*0.72});y+=LH.ipa});
+      }
+      probe.font=FRU; var ruLines=wrapText(probe,w.ru,colW);
+      ruLines.forEach(function(l){ops.push({t:l,f:FRU,c:'#1A1E2B',x:0,y:y+LH.ru*0.74});y+=LH.ru});
+      return {ops:ops,h:y+PB};
+    });
+
+    var total=items.reduce(function(s,i){return s+i.h},0), target=total/cols;
+    var columns=[],cur=[],curH=0;
+    items.forEach(function(it){
+      if(curH+it.h/2>target&&columns.length<cols-1&&cur.length){columns.push(cur);cur=[];curH=0}
+      cur.push(it);curH+=it.h;
+    });
+    columns.push(cur);
+    var colHs=columns.map(function(c){return c.reduce(function(s,i){return s+i.h},0)});
+    var headerH=250, H=headerH+Math.max.apply(null,colHs)+70;
+
+    var c=document.createElement('canvas'); c.width=W; c.height=H;
+    var ctx=c.getContext('2d');
+    ctx.fillStyle='#FBFDFF'; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='#E1EAF7'; ctx.lineWidth=1;
+    ctx.beginPath();
+    for(var x=0;x<=W;x+=30){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H)}
+    for(var yy=0;yy<=H;yy+=30){ctx.moveTo(0,yy+.5);ctx.lineTo(W,yy+.5)}
+    ctx.stroke();
+    ctx.strokeStyle='#E2574A'; ctx.lineWidth=3;
+    ctx.beginPath(); ctx.moveTo(46,0); ctx.lineTo(46,H); ctx.stroke();
+
+    ctx.textBaseline='alphabetic';
+    ctx.fillStyle='#22308F'; ctx.font='96px "Marck Script","Segoe Script",cursive';
+    ctx.fillText('Шпаргалка',pad,pad+92);
+    ctx.fillStyle='#6F7686'; ctx.font='400 30px "Golos Text",system-ui,sans-serif';
+    ctx.fillText('Словарный диктант: '+WORDS.length+' слов, английский и русский',pad,pad+150);
+    ctx.strokeStyle='#B9C8E4'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(pad,headerH-6); ctx.lineTo(W-pad,headerH-6); ctx.stroke();
+
+    columns.forEach(function(col,ci){
+      var cx=pad+ci*(colW+gap), y0=headerH;
+      if(ci>0){
+        ctx.strokeStyle='#B9C8E4'; ctx.lineWidth=1.5;
+        var sx=cx-gap/2; ctx.beginPath(); ctx.moveTo(sx,headerH+6); ctx.lineTo(sx,H-50); ctx.stroke();
+      }
+      col.forEach(function(it){
+        it.ops.forEach(function(o){ctx.font=o.f;ctx.fillStyle=o.c;ctx.fillText(o.t,cx+o.x,y0+o.y)});
+        y0+=it.h;
+        ctx.strokeStyle='#C9D6EC'; ctx.lineWidth=1.5;
+        ctx.beginPath(); ctx.moveTo(cx,y0-6); ctx.lineTo(cx+colW,y0-6); ctx.stroke();
+      });
+    });
+
+    sheetCanvas=c;
+    var img=$('#sheetImg'); img.src=c.toDataURL('image/png'); img.hidden=false;
+    note.textContent=dl?'Готово. Кнопка сохранит картинку, а на телефоне её можно открыть и увеличить пальцами.':
+      'Готово. Нажми на картинку и удержи, чтобы сохранить её. На компьютере: правая кнопка мыши, «Сохранить картинку как».';
+  }catch(err){
+    note.textContent='Не получилось нарисовать шпаргалку. Обнови страницу и попробуй ещё раз.';
+  }
+  sheetBusy=false;
+}
+function saveSheet(){
+  if(!sheetCanvas||!dl)return;
+  sheetCanvas.toBlob(function(blob){
+    if(!blob)return;
+    dl.save({filename:'shpargalka-slovarny-diktant.png',data:blob}).then(function(){
+      $('#dlNote').textContent='Шпаргалка сохранена.';
+    }).catch(function(e){
+      var code=e&&e.code;
+      $('#dlNote').textContent=code==='declined'
+        ?'Сохранение отменено. Можно нажать на картинку и удержать, чтобы сохранить её вручную.'
+        :'Кнопка не сработала. Нажми на картинку и удержи, чтобы сохранить её вручную.';
+    });
+  },'image/png');
+}
+$('#dlBtn').addEventListener('click',saveSheet);
+document.querySelectorAll('input[name="cols"]').forEach(function(r){
+  r.addEventListener('change',function(){sheetCols=parseInt(r.value,10);buildSheet()});
+});
+
+/* ---------- Вкладки ---------- */
+var sheetBuilt=false;
+function showTab(name){
+  ['cards','test','sheet'].forEach(function(n){
+    $('#tab-'+n).hidden=(n!==name);
+    var t=$('#t-'+n); t.setAttribute('aria-selected',n===name?'true':'false'); t.classList.toggle('on',n===name);
+  });
+  if(name==='sheet'&&!sheetBuilt){sheetBuilt=true;buildSheet()}
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.tab').forEach(function(b){
+  b.addEventListener('click',function(){showTab(b.dataset.tab)});
+});
+
+/* ---------- Запуск ---------- */
+$('#subline').textContent=WORDS.length+' слов по программированию';
+renderCards();
+renderSetup();
+
+(async function(){
+  try{
+    if(window.claude&&typeof window.claude.use==='function'){
+      dl=await window.claude.use('downloads');
+    }
+  }catch(e){dl=null}
+  if(!window.claude){
+    /* обычный сайт (GitHub Pages): скачивание через ссылку */
+    dl={save:function(o){return new Promise(function(res){
+      var url=URL.createObjectURL(o.data),a=document.createElement('a');
+      a.href=url;a.download=o.filename;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(function(){URL.revokeObjectURL(url)},1500);res({status:'saved'});
+    })}};
+  }
+  $('#dlBtn').hidden=!dl;
+  var n=$('#dlNote');
+  if(!dl&&sheetCanvas){n.textContent='Нажми на картинку и удержи, чтобы сохранить её. На компьютере: правая кнопка мыши, «Сохранить картинку как».'}
+})();
+
+})();
+</script>
+</body>
+</html>

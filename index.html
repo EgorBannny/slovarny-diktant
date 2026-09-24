@@ -283,7 +283,7 @@ function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&am
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function norm(s){
   return String(s).toLowerCase().replace(/ё/g,'е')
-    .replace(/[«»“”"']/g,'').replace(/[–—−]/g,'-')
+    .replace(/[«»“”„‟"'‘’‚`´‹›]/g,' ').replace(/[–—−]/g,'-')
     .replace(/\s*([\/,])\s*/g,'$1').replace(/\s+/g,' ').trim();
 }
 function lev(a,b){
@@ -328,7 +328,8 @@ function judge(q,text,strict){
 }
 function nc(ch){return ch.toLowerCase().replace('ё','е')}
 function diff(user,target){
-  var a=Array.from(user.trim().replace(/\s+/g,' ')),b=Array.from(target);
+  var QRE=/[«»“”„‟"'‘’‚`´‹›]/g;
+  var a=Array.from(user.replace(QRE,' ').replace(/\s+/g,' ').trim()),b=Array.from(target.replace(QRE,'').replace(/\s+/g,' ').trim());
   var n=a.length,m=b.length,i,j,dp=[];
   for(i=0;i<=n;i++){dp.push(new Array(m+1).fill(0))}
   for(i=n-1;i>=0;i--)for(j=m-1;j>=0;j--){

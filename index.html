@@ -49,7 +49,7 @@ body{
   font-size:17px;line-height:1.45;
   -webkit-text-size-adjust:100%;
 }
-.wrap{max-width:800px;margin:0 auto;padding:0 18px 80px 48px;position:relative}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px 100px 48px;position:relative}
 .wrap::before{content:"";position:absolute;left:28px;top:0;bottom:0;width:2px;background:var(--margin);opacity:.85}
 
 .top{padding-top:22px}
@@ -62,7 +62,7 @@ body{
 
 .tabs{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:5;
-  display:flex;gap:4px;margin:14px 0 22px;
+  display:flex;gap:4px;margin:14px 0 20px;
   background:var(--paper);border-bottom:1.5px solid var(--line);
 }
 .tab{
@@ -70,30 +70,87 @@ body{
   padding:12px 12px 10px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1.5px;
 }
 .tab.on{color:var(--ink);border-bottom-color:var(--ink)}
-.tab:focus-visible,.btn:focus-visible,.link:focus-visible,.card:focus-visible{outline:3px solid var(--margin);outline-offset:2px}
+.tab:focus-visible,.btn:focus-visible,.link:focus-visible,.card:focus-visible,.gcard:focus-visible{outline:3px solid var(--margin);outline-offset:2px}
 
 h2{font-size:1.25rem;margin:0 0 10px;color:var(--text)}
 .note{color:var(--pencil);font-size:.92rem;margin:8px 0}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* cards */
-.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+/* search & mode row */
+.tools{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}
 .tools input,.tools select{
   font:inherit;color:var(--text);background:var(--card);
   border:1.5px solid var(--line);border-radius:6px;padding:9px 12px;min-width:0;
 }
-.tools input{flex:1 1 200px}
+.tools input{flex:1 1 220px}
 .tools input:focus-visible,.tools select:focus-visible{outline:3px solid var(--margin);outline-offset:1px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
-.card .en{font-weight:700;font-size:1.22rem;line-height:1.25;color:var(--ink);overflow-wrap:anywhere}
-.card .ipa{font-family:"Gentium Plus","Noto Serif","DejaVu Serif",serif;color:var(--pencil);font-size:1.08rem;margin-top:2px;overflow-wrap:anywhere}
+
+/* breadcrumbs */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin:0 0 16px;font-size:.98rem}
+.crumbs button{font:inherit;font-weight:600;color:var(--ink);background:none;border:0;padding:4px 2px;text-decoration:underline;cursor:pointer}
+.crumbs span.sep{color:var(--pencil)}
+.crumbs span.here{font-weight:600;color:var(--text);padding:4px 2px}
+
+/* group cards (sections / sets) */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-bottom:6px}
+.gcard{
+  position:relative;background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:16px 44px 14px 16px;cursor:default;-webkit-user-select:none;user-select:none;
+  text-align:left;font:inherit;color:inherit;
+}
+.gcard .gtitle{font-weight:700;color:var(--ink);font-size:1.08rem;line-height:1.3}
+.gcard .gsub{color:var(--pencil);font-size:.9rem;margin-top:4px}
+.gcheck{position:absolute;top:12px;right:12px;width:24px;height:24px;cursor:pointer}
+.gcheck input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.gcheck .box{position:absolute;inset:0;border:2px solid var(--line);border-radius:5px;background:var(--card);pointer-events:none}
+.gcheck input:checked+.box{background:var(--ink);border-color:var(--ink)}
+.gcheck input:checked+.box::after{content:"";position:absolute;left:6px;top:2px;width:6px;height:11px;border:solid var(--btn-text);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.gcheck input:indeterminate+.box{background:var(--ink);border-color:var(--ink);opacity:.55}
+.gcheck input:focus-visible+.box{outline:3px solid var(--margin);outline-offset:2px}
+
+/* word cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 44px 12px 14px}
+.card.weak{border-left:4px solid var(--bad)}
+.card .tag{color:var(--pencil);font-size:.78rem;margin-bottom:4px}
+.card .en{font-weight:700;font-size:1.2rem;line-height:1.25;color:var(--ink);overflow-wrap:anywhere}
+.card .ipa{font-family:"Gentium Plus","Noto Serif","DejaVu Serif",serif;color:var(--pencil);font-size:1.05rem;margin-top:2px;overflow-wrap:anywhere}
 .card .ru{margin-top:6px;overflow-wrap:anywhere}
 .study .card{cursor:pointer}
 .study-ru .card:not(.open) .ru,
 .study-en .card:not(.open) .en,
 .study-en .card:not(.open) .ipa{color:transparent;text-shadow:0 0 10px var(--text);user-select:none}
 .empty{color:var(--pencil);padding:20px 0}
+
+/* audio + senses/examples */
+.enrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.spk{flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);
+  background:var(--card);color:var(--ink);font-size:.95rem;line-height:1;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;padding:0}
+.spk:hover{border-color:var(--ink)}
+.study-en .card:not(.open) .spk{visibility:hidden;pointer-events:none}
+.detailsToggle{display:block;margin-top:10px;font:inherit;font-size:.85rem;font-weight:600;
+  color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline}
+.detailsBody{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line)}
+.sense{font-size:.92rem;margin:0 0 6px}
+.sru{font-weight:600;color:var(--text)}
+.snote{display:block;color:var(--pencil);font-size:.84rem;margin-top:1px}
+.examples{margin-top:8px;display:grid;gap:8px}
+.example{background:var(--paper);border-radius:6px;padding:8px 10px}
+.exen{font-style:italic;color:var(--text);overflow-wrap:anywhere}
+.exru{color:var(--pencil);font-size:.9rem;margin-top:3px;overflow-wrap:anywhere}
+
+/* multiple choice */
+.choices{display:grid;gap:10px;margin-top:4px}
+.choiceBtn{font:inherit;font-size:1.05rem;text-align:left;padding:12px 16px;border:2px solid var(--line);
+  border-radius:8px;background:var(--card);color:var(--text);cursor:pointer}
+.choiceBtn:hover{border-color:var(--ink)}
+.choiceBtn:focus-visible{outline:3px solid var(--margin);outline-offset:2px}
+
+/* cloze */
+.prompt.cloze{font-size:clamp(1.1rem,4.2vw,1.5rem);font-weight:500}
+.blank{display:inline-block;border-bottom:3px solid var(--ink);min-width:4em;height:1em;vertical-align:text-bottom}
+.clozeru{color:var(--pencil);font-size:.95rem;margin:-10px 0 18px}
 
 /* buttons, chips */
 .btn{
@@ -112,8 +169,22 @@ legend{padding:0;margin-bottom:8px;font-weight:600}
 .chip input:checked+span{border-color:var(--ink);background:var(--ink);color:var(--btn-text)}
 .chip input:focus-visible+span{outline:3px solid var(--margin);outline-offset:2px}
 .chip input:disabled+span{opacity:.45}
+.srcchip span small{display:block;font-weight:400;font-size:.82rem;opacity:.85;margin-top:2px}
 .check{display:flex;gap:10px;align-items:flex-start;margin:4px 0 12px;cursor:pointer}
 .check input{margin-top:5px;width:18px;height:18px;accent-color:var(--ink)}
+
+/* selection bar */
+.selbar{
+  position:fixed;left:0;right:0;bottom:0;z-index:6;
+  display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;
+  background:var(--ink);color:var(--btn-text);padding:12px 16px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  box-shadow:0 -4px 14px rgba(0,0,0,.18);
+}
+.selbar span{font-weight:600}
+.selbar .btn{border-color:var(--btn-text);color:var(--btn-text)}
+.selbar .btn.primary{background:var(--btn-text);color:var(--ink)}
+.selbar .link{color:var(--btn-text);opacity:.85}
 
 /* dictation */
 .panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:20px}
@@ -146,9 +217,7 @@ mark.miss{background:var(--ok-bg);color:var(--ok);font-weight:700}
 .gradeword{font-size:1.2rem;font-weight:600;margin:0}
 .misses{margin-top:22px;display:grid;gap:12px}
 .miss-item .said{font-size:.95rem;color:var(--pencil);margin:0 0 6px}
-
-/* sheet */
-.sheetimg{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px;background:#fff;margin-top:14px}
+.srcbox{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:16px;margin-bottom:16px}
 
 @media (max-width:420px){
   .wrap{padding-left:40px;padding-right:14px}
@@ -168,13 +237,12 @@ mark.miss{background:var(--ok-bg);color:var(--ok);font-weight:700}
   <nav class="tabs" role="tablist" aria-label="Разделы">
     <button class="tab on" role="tab" id="t-cards" data-tab="cards" aria-selected="true" aria-controls="tab-cards">Карточки</button>
     <button class="tab" role="tab" id="t-test" data-tab="test" aria-selected="false" aria-controls="tab-test">Диктант</button>
-    <button class="tab" role="tab" id="t-sheet" data-tab="sheet" aria-selected="false" aria-controls="tab-sheet">Шпаргалка</button>
   </nav>
 
   <main>
     <section id="tab-cards" role="tabpanel" aria-labelledby="t-cards">
       <div class="tools">
-        <label class="sr" for="q">Поиск по словам</label>
+        <label class="sr" for="q">Поиск по всем словам</label>
         <input id="q" type="search" placeholder="Поиск: слово или перевод" autocomplete="off">
         <label class="sr" for="mode">Что показывать</label>
         <select id="mode">
@@ -183,107 +251,487 @@ mark.miss{background:var(--ok-bg);color:var(--ok);font-weight:700}
           <option value="hide-en">Скрыть английский</option>
         </select>
       </div>
+      <nav class="crumbs" id="crumbs" aria-label="Хлебные крошки"></nav>
       <p class="note" id="cardsNote"></p>
-      <div class="grid" id="grid"></div>
+      <div id="cardsArea"></div>
     </section>
 
     <section id="tab-test" role="tabpanel" aria-labelledby="t-test" hidden>
       <div id="dictation"></div>
     </section>
-
-    <section id="tab-sheet" role="tabpanel" aria-labelledby="t-sheet" hidden>
-      <h2>Шпаргалка на одной картинке</h2>
-      <p class="note">Все слова: английский, транскрипция и перевод.</p>
-      <fieldset>
-        <legend class="sr">Число колонок</legend>
-        <label class="chip"><input type="radio" name="cols" value="2" checked><span>2 колонки, для телефона</span></label>
-        <label class="chip"><input type="radio" name="cols" value="3"><span>3 колонки, для печати</span></label>
-      </fieldset>
-      <div class="row" style="margin-top:0">
-        <button class="btn primary" id="dlBtn" hidden>Скачать картинку</button>
-      </div>
-      <p class="note" id="dlNote" role="status"></p>
-      <img id="sheetImg" class="sheetimg" alt="Шпаргалка со всеми словами: английский, транскрипция и перевод" hidden>
-    </section>
   </main>
+</div>
+
+<div class="selbar" id="selBar" hidden>
+  <span id="selCount"></span>
+  <button class="link" id="selClear" type="button">Очистить</button>
+  <button class="btn primary" id="selGo" type="button">Диктант по выбранному</button>
 </div>
 
 <script>
 (function(){
 'use strict';
 
-/* ---------- Данные: [английский, транскрипция, русский, {доп. варианты}] ---------- */
-var RAW = [
- ["linear programming","[ˈlɪniə ˈprəʊɡræmɪŋ]","линейное программирование"],
- ["object-oriented programming","[ˈɒbdʒɪkt ˈɔːriəntɪd ˈprəʊɡræmɪŋ]","объектно-ориентированное программирование"],
- ["visual programming","[ˈvɪʒuəl ˈprəʊɡræmɪŋ]","визуальное программирование"],
- ["chaotic programming","[keɪˈɒtɪk ˈprəʊɡræmɪŋ]","хаотическое программирование"],
- ["logical programming","[ˈlɒdʒɪkl ˈprəʊɡræmɪŋ]","логическое программирование",{enAcc:["logical programming","logic programming"]}],
- ["functional programming","[ˈfʌŋkʃənl ˈprəʊɡræmɪŋ]","функциональное программирование"],
- ["dynamic programming","[daɪˈnæmɪk ˈprəʊɡræmɪŋ]","динамическое программирование"],
- ["structured programming","[ˈstrʌktʃəd ˈprəʊɡræmɪŋ]","структурированное программирование"],
- ["mathematical programming","[ˌmæθəˈmætɪkl ˈprəʊɡræmɪŋ]","математическое программирование"],
- ["system programming","[ˈsɪstəm ˈprəʊɡræmɪŋ]","системное программирование"],
- ["algorithm","[ˈælɡərɪðəm]","последовательность программных действий"],
- ["routine","[ruːˈtiːn]","стандартная программа"],
- ["subroutine","[ˈsʌbruːˌtiːn]","подпрограмма"],
- ["control program","[kənˈtrəʊl ˈprəʊɡræm]","программа управления"],
- ["diagram(m, e, me)","[ˈdaɪəɡræm]","строить (чертить) схему, чертёж",
-   {enAcc:["diagram(m, e, me)","diagram"],ruAcc:["строить схему","чертить схему","чертёж","строить (чертить) схему, чертёж"]}],
- ["flow-chart","[ˈfləʊ tʃɑːt]","блок-схема"],
- ["procedure","[prəˈsiːdʒə]","процедура"],
- ["function","[ˈfʌŋkʃn]","функция"],
- ["loop","[luːp]","цикл"],
- ["debug","[ˌdiːˈbʌɡ]","отлаживать / отладка"],
- ["debugger","[ˌdiːˈbʌɡə]","отладчик"],
- ["debugging","[ˌdiːˈbʌɡɪŋ]","процесс отладки"],
- ["technique","[tekˈniːk]","приём, способ, метод"],
- ["define","[dɪˈfaɪn]","ставить задачу"],
- ["invalidate","[ɪnˈvælɪdeɪt]","выводить из строя"],
- ["computer manual","[kəmˈpjuːtə ˈmænjuəl]","руководство по пользованию компьютером"],
- ["coding","[ˈkəʊdɪŋ]","процесс кодирования"],
- ["actual coding","[ˈæktʃuəl ˈkəʊdɪŋ]","действительное кодирование (кодирование, которое осуществляется, когда о нём говорят)"],
- ["rest of the bits","[rest əv ðə bɪts]","оставшиеся биты"],
- ["octal number","[ˈɒktl ˈnʌmbə]","восьмеричное число"],
- ["constant","[ˈkɒnstənt]","постоянная величина"],
- ["variable","[ˈveəriəbl]","переменная величина"],
- ["cell","[sel]","ячейка (на аппаратном уровне)"],
- ["mesh","[meʃ]","ячейка (на программном уровне)"],
- ["temporary","[ˈtempərəri]","рабочая ячейка памяти"],
- ["jump","[dʒʌmp]","переходить / переход"],
- ["job","[dʒɒb]","задача"],
- ["job control","[dʒɒb kənˈtrəʊl]","управление потоком заданий"],
- ["SRU (system resident unit)","[ˌes ɑːr ˈjuː] [ˈsɪstəm ˈrezɪdənt ˈjuːnɪt]","системное резидентное устройство"],
- ["supervisor","[ˈsjuːpəvaɪzə]","наблюдатель"],
- ["library","[ˈlaɪbrəri]","библиотека"],
- ["RL (relocatable library)","[ˌɑːr ˈel] [ˌriːləʊˈkeɪtəbl ˈlaɪbrəri]","перемещаемая библиотека"],
- ["CIL (core image library)","[ˌsiː aɪ ˈel] [kɔː ˈɪmɪdʒ ˈlaɪbrəri]","библиотека абсолютных модулей"],
- ["SSL (source statement library)","[ˌes es ˈel] [sɔːs ˈsteɪtmənt ˈlaɪbrəri]","библиотека исходных приложений"],
- ["librarian","[laɪˈbreəriən]","программа «Библиотекарь»"],
- ["linkage editor","[ˈlɪŋkɪdʒ ˈedɪtə]","программа «Редактор связей»"],
- ["IPL (initial program loading)","[ˌaɪ piː ˈel] [ɪˈnɪʃl ˈprəʊɡræm ˈləʊdɪŋ]","начальная загрузка программ"],
- ["tools","[tuːlz]","инструменты"],
- ["shorthand","[ˈʃɔːthænd]","стенограмма, стенография, краткая запись чего-либо"],
- ["processor","[ˈprəʊsesə]","программа «Переводчик»"],
- ["interrupt","[ˌɪntəˈrʌpt]","прерывать / прерывание"],
- ["interruption","[ˌɪntəˈrʌpʃn]","прерывание / результат"],
- ["turn","[tɜːn]","передавать"],
- ["initiate","[ɪˈnɪʃieɪt]","выдвигать (инициировать)",
-   {ruAcc:["выдвигать","инициировать","выдвигать (инициировать)"]}]
-];
-var WORDS = RAW.map(function(r,i){
-  var w = {id:i+1, en:r[0], ipa:r[1], ru:r[2]};
-  if(r[3]) for(var k in r[3]) w[k]=r[3][k];
+/* ---------- Данные: разделы → наборы → слова ---------- */
+var idSeq=0;
+function W(en,ipa,ru,extra){
+  var w={id:++idSeq,en:en,ipa:ipa,ru:ru};
+  if(extra) for(var k in extra) w[k]=extra[k];
   return w;
+}
+var SECTIONS=[
+ {id:'it',title:'IT-термины',sets:[
+   {id:'paradigms',title:'Виды программирования',words:[
+     W('linear programming','[ˈlɪniə ˈprəʊɡræmɪŋ]','линейное программирование',{examples:[
+       {en:"Linear programming is used to find the optimal solution under a set of linear constraints.",ru:"Линейное программирование применяют, чтобы найти оптимальное решение при наборе линейных ограничений."},
+       {en:"The delivery company used linear programming to minimize transportation costs.",ru:"Транспортная компания использовала линейное программирование, чтобы снизить расходы на перевозки."}
+     ]}),
+     W('object-oriented programming','[ˈɒbdʒɪkt ˈɔːriəntɪd ˈprəʊɡræmɪŋ]','объектно-ориентированное программирование',{examples:[
+       {en:"In object-oriented programming, data and the functions that work with it are bundled into objects.",ru:"В объектно-ориентированном программировании данные и работающие с ними функции объединяют в объекты."},
+       {en:"Java and C++ are both built around object-oriented programming.",ru:"И Java, и C++ построены вокруг идеи объектно-ориентированного программирования."}
+     ]}),
+     W('visual programming','[ˈvɪʒuəl ˈprəʊɡræmɪŋ]','визуальное программирование',{examples:[
+       {en:"Visual programming lets you build an app by dragging blocks instead of typing code.",ru:"Визуальное программирование позволяет собирать приложение, перетаскивая блоки, а не печатая код."},
+       {en:"Scratch is a visual programming tool often used to teach kids the basics of coding.",ru:"Scratch — инструмент визуального программирования, которым часто учат детей основам программирования."}
+     ]}),
+     W('chaotic programming','[keɪˈɒtɪk ˈprəʊɡræmɪŋ]','хаотическое программирование',{examples:[
+       {en:"Early chaotic programming had no clear structure, so the code was hard to follow.",ru:"У раннего хаотического программирования не было чёткой структуры, поэтому код было трудно читать."},
+       {en:"Chaotic programming relied on jumps all over the code instead of organized blocks.",ru:"Хаотическое программирование строилось на переходах по всему коду, а не на организованных блоках."}
+     ]}),
+     W('logical programming','[ˈlɒdʒɪkl ˈprəʊɡræmɪŋ]','логическое программирование',{enAcc:['logical programming','logic programming'],examples:[
+       {en:"In logical programming, you describe facts and rules, and the system finds the answer itself.",ru:"В логическом программировании ты описываешь факты и правила, а систему сама находит ответ."},
+       {en:"Prolog is the language most associated with logical programming.",ru:"Prolog — язык, который чаще всего ассоциируется с логическим программированием."}
+     ]}),
+     W('functional programming','[ˈfʌŋkʃənl ˈprəʊɡræmɪŋ]','функциональное программирование',{examples:[
+       {en:"Functional programming avoids changing data and relies on pure functions instead.",ru:"Функциональное программирование избегает изменения данных и опирается на чистые функции."},
+       {en:"Haskell was designed specifically around functional programming.",ru:"Haskell был разработан именно вокруг идеи функционального программирования."}
+     ]}),
+     W('dynamic programming','[daɪˈnæmɪk ˈprəʊɡræmɪŋ]','динамическое программирование',{senses:[
+       {ru:'метод решения задач через подзадачи',note:'не путай с «динамически выделяемой памятью» — это именно способ решения задач'}
+     ],examples:[
+       {en:"Dynamic programming solves a problem by breaking it into smaller overlapping subproblems.",ru:"Динамическое программирование решает задачу, разбивая её на меньшие повторяющиеся подзадачи."},
+       {en:"We used dynamic programming to speed up the algorithm from exponential to polynomial time.",ru:"Мы применили динамическое программирование, чтобы ускорить алгоритм с экспоненциального времени до полиномиального."}
+     ]}),
+     W('structured programming','[ˈstrʌktʃəd ˈprəʊɡræmɪŋ]','структурированное программирование',{examples:[
+       {en:"Structured programming replaced goto statements with loops and conditionals.",ru:"Структурированное программирование заменило операторы goto циклами и условными конструкциями."},
+       {en:"Pascal was created to encourage structured programming.",ru:"Pascal создали, чтобы поощрять структурированное программирование."}
+     ]}),
+     W('mathematical programming','[ˌmæθəˈmætɪkl ˈprəʊɡræmɪŋ]','математическое программирование',{examples:[
+       {en:"Mathematical programming covers optimization problems like linear and dynamic programming.",ru:"Математическое программирование охватывает задачи оптимизации, такие как линейное и динамическое программирование."},
+       {en:"Operations research relies heavily on mathematical programming.",ru:"Исследование операций во многом опирается на математическое программирование."}
+     ]}),
+     W('system programming','[ˈsɪstəm ˈprəʊɡræmɪŋ]','системное программирование',{examples:[
+       {en:"System programming deals with writing operating systems and device drivers.",ru:"Системное программирование занимается написанием операционных систем и драйверов устройств."},
+       {en:"C is still the most common language for system programming.",ru:"C по-прежнему остаётся самым распространённым языком для системного программирования."}
+     ]}),
+     W('algorithm','[ˈælɡərɪðəm]','последовательность программных действий',{examples:[
+       {en:"An algorithm is a step-by-step set of instructions for solving a problem.",ru:"Алгоритм — это пошаговый набор инструкций для решения задачи."},
+       {en:"The sorting algorithm compares each pair of elements and swaps them if needed.",ru:"Алгоритм сортировки сравнивает каждую пару элементов и меняет их местами при необходимости."}
+     ]})
+   ]},
+   {id:'programs',title:'Программы и подпрограммы',words:[
+     W('routine','[ruːˈtiːn]','стандартная программа',{senses:[
+       {ru:'подпрограмма (обобщённо)',note:'часто используется как более общий синоним subroutine'}
+     ],examples:[
+       {en:"The library includes a routine for calculating square roots.",ru:"В библиотеке есть стандартная программа для вычисления квадратного корня."},
+       {en:"Call this routine whenever you need to validate user input.",ru:"Вызывай эту стандартную программу всякий раз, когда нужно проверить ввод пользователя."}
+     ]}),
+     W('subroutine','[ˈsʌbruːˌtiːn]','подпрограмма',{examples:[
+       {en:"The main program calls a subroutine to sort the array.",ru:"Основная программа вызывает подпрограмму, чтобы отсортировать массив."},
+       {en:"A subroutine can be called from several different parts of the program.",ru:"Подпрограмму можно вызывать из нескольких разных частей программы."}
+     ]}),
+     W('control program','[kənˈtrəʊl ˈprəʊɡræm]','программа управления',{examples:[
+       {en:"The control program schedules which job runs next.",ru:"Программа управления определяет, какое задание запустится следующим."},
+       {en:"Without the control program, the operating system couldn't coordinate its components.",ru:"Без программы управления операционная система не смогла бы координировать свои компоненты."}
+     ]}),
+     W('diagram(m, e, me)','[ˈdaɪəɡræm]','строить (чертить) схему, чертёж',
+       {enAcc:['diagram(m, e, me)','diagram'],ruAcc:['строить схему','чертить схему','чертёж','строить (чертить) схему, чертёж'],examples:[
+       {en:"Let's diagram the algorithm before we start coding it.",ru:"Давай начертим схему алгоритма, прежде чем начнём его кодировать."},
+       {en:"She diagrammed the whole process on the whiteboard.",ru:"Она начертила всю схему процесса на доске."}
+     ]}),
+     W('flow-chart','[ˈfləʊ tʃɑːt]','блок-схема',{examples:[
+       {en:"Draw a flow-chart before writing the actual code.",ru:"Нарисуй блок-схему, прежде чем писать сам код."},
+       {en:"The flow-chart shows every decision point in the program.",ru:"Блок-схема показывает каждую точку принятия решения в программе."}
+     ]}),
+     W('procedure','[prəˈsiːdʒə]','процедура',{senses:[
+       {ru:'методика, порядок действий',note:'в обычной речи — не только программный термин'}
+     ],examples:[
+       {en:"This procedure prints the result but doesn't return a value.",ru:"Эта процедура печатает результат, но не возвращает значение."},
+       {en:"Follow the installation procedure exactly as described.",ru:"Следуй процедуре установки точно так, как описано."}
+     ]}),
+     W('function','[ˈfʌŋkʃn]','функция',{senses:[
+       {ru:'функция (математическая)',note:'в математике — зависимость одной величины от другой'}
+     ],examples:[
+       {en:"This function returns the sum of two numbers.",ru:"Эта функция возвращает сумму двух чисел."},
+       {en:"A pure function always returns the same result for the same input.",ru:"Чистая функция всегда возвращает один и тот же результат для одних и тех же входных данных."}
+     ]})
+   ]},
+   {id:'debug',title:'Отладка и кодирование',words:[
+     W('loop','[luːp]','цикл',{senses:[
+       {ru:'петля (общее значение)',note:'вне программирования — обычная петля, виток'}
+     ],examples:[
+       {en:"The loop keeps printing numbers from 1 to 10.",ru:"Цикл раз за разом печатает числа от 1 до 10."},
+       {en:"Be careful — an infinite loop will freeze the program.",ru:"Будь осторожен — бесконечный цикл приведёт к зависанию программы."}
+     ]}),
+     W('debug','[ˌdiːˈbʌɡ]','отлаживать / отладка',{examples:[
+       {en:"It took her an hour to debug the login function.",ru:"У неё ушёл час, чтобы отладить функцию входа в систему."},
+       {en:"We spent the whole evening debugging the new release.",ru:"Мы потратили весь вечер на отладку нового релиза."}
+     ]}),
+     W('debugger','[ˌdiːˈbʌɡə]','отладчик',{examples:[
+       {en:"Open the debugger and set a breakpoint on this line.",ru:"Открой отладчик и поставь точку останова на этой строке."},
+       {en:"The debugger lets you step through the code one line at a time.",ru:"Отладчик позволяет проходить код построчно, шаг за шагом."}
+     ]}),
+     W('debugging','[ˌdiːˈbʌɡɪŋ]','процесс отладки',{examples:[
+       {en:"Debugging is often the most time-consuming part of development.",ru:"Отладка часто оказывается самой долгой частью разработки."},
+       {en:"Good logging makes debugging much easier.",ru:"Хорошее логирование сильно упрощает отладку."}
+     ]}),
+     W('technique','[tekˈniːk]','приём, способ, метод',{senses:[
+       {ru:'техника (в широком смысле)',note:'это именно способ действия, а не физическое устройство'}
+     ],examples:[
+       {en:"This technique reduces memory usage significantly.",ru:"Этот приём заметно снижает расход памяти."},
+       {en:"She explained a new technique for optimizing the query.",ru:"Она объяснила новый метод оптимизации запроса."}
+     ]}),
+     W('define','[dɪˈfaɪn]','ставить задачу',{senses:[
+       {ru:'определять, задавать (значение)',note:'в коде чаще значит «задать», а не «дать определение словами»'}
+     ],examples:[
+       {en:"You need to define the task before you start writing code.",ru:"Нужно поставить задачу, прежде чем начинать писать код."},
+       {en:"Let's define exactly what the program should do first.",ru:"Давай сначала чётко поставим задачу — что именно должна делать программа."}
+     ]}),
+     W('invalidate','[ɪnˈvælɪdeɪt]','выводить из строя',{senses:[
+       {ru:'аннулировать, делать недействительным',note:'более точный общий смысл — «сделать недействительным», не обязательно «сломать»'}
+     ],examples:[
+       {en:"A single wrong byte can invalidate the whole file.",ru:"Один неверный байт может вывести из строя весь файл."},
+       {en:"The cache is invalidated as soon as the data changes.",ru:"Кэш признаётся недействительным, как только данные меняются."}
+     ]}),
+     W('computer manual','[kəmˈpjuːtə ˈmænjuəl]','руководство по пользованию компьютером',{examples:[
+       {en:"Check the computer manual if you're not sure how to install the driver.",ru:"Загляни в руководство по пользованию компьютером, если не уверен, как установить драйвер."},
+       {en:"The computer manual explains every error code in detail.",ru:"Руководство по пользованию компьютером подробно объясняет каждый код ошибки."}
+     ]}),
+     W('coding','[ˈkəʊdɪŋ]','процесс кодирования',{examples:[
+       {en:"Coding took longer than planning the algorithm.",ru:"Процесс кодирования занял больше времени, чем планирование алгоритма."},
+       {en:"She spent the morning coding the new feature.",ru:"Она провела утро за кодированием новой функции."}
+     ]}),
+     W('actual coding','[ˈæktʃuəl ˈkəʊdɪŋ]','действительное кодирование (кодирование, которое осуществляется, когда о нём говорят)',{examples:[
+       {en:"Planning took a week, but the actual coding was finished in two days.",ru:"Планирование заняло неделю, а само действительное кодирование — всего два дня."},
+       {en:"Most of the project is design; actual coding is a small part.",ru:"Большая часть проекта — это проектирование; действительное кодирование занимает лишь небольшую долю."}
+     ]}),
+     W('rest of the bits','[rest əv ðə bɪts]','оставшиеся биты',{examples:[
+       {en:"The first four bits store the type, and the rest of the bits store the value.",ru:"Первые четыре бита хранят тип, а оставшиеся биты хранят значение."},
+       {en:"Ignore the rest of the bits — they're reserved for future use.",ru:"Не обращай внимания на оставшиеся биты — они зарезервированы на будущее."}
+     ]}),
+     W('octal number','[ˈɒktl ˈnʌmbə]','восьмеричное число',{examples:[
+       {en:"755 is a common octal number used for file permissions.",ru:"755 — распространённое восьмеричное число, которое используют для прав доступа к файлам."},
+       {en:"Convert the binary value into an octal number.",ru:"Переведи двоичное значение в восьмеричное число."}
+     ]})
+   ]},
+   {id:'data',title:'Данные и переходы',words:[
+     W('constant','[ˈkɒnstənt]','постоянная величина',{examples:[
+       {en:"Pi is a constant that never changes during the program.",ru:"Пи — это постоянная величина, которая не меняется во время работы программы."},
+       {en:"Define the maximum size as a constant at the top of the file.",ru:"Задай максимальный размер как постоянную величину в начале файла."}
+     ]}),
+     W('variable','[ˈveəriəbl]','переменная величина',{examples:[
+       {en:"The variable stores the current score of the player.",ru:"Переменная величина хранит текущий счёт игрока."},
+       {en:"You forgot to initialize the variable before using it.",ru:"Ты забыл инициализировать переменную величину перед использованием."}
+     ]}),
+     W('cell','[sel]','ячейка (на аппаратном уровне)',{senses:[
+       {ru:'ячейка памяти (физическая)',note:'аппаратный уровень — реальный физический элемент памяти'}
+     ],examples:[
+       {en:"Each memory cell can store one byte of data.",ru:"Каждая ячейка памяти может хранить один байт данных."},
+       {en:"A single cell failure can corrupt the whole block.",ru:"Сбой одной ячейки памяти может повредить весь блок."}
+     ]}),
+     W('mesh','[meʃ]','ячейка (на программном уровне)',{senses:[
+       {ru:'сетка, сеть (общее значение)',note:'здесь — программная, не физическая ячейка, в отличие от cell'}
+     ],examples:[
+       {en:"At the program level, a mesh is just a named storage location.",ru:"На программном уровне ячейка — это просто именованное место для хранения данных."},
+       {en:"The compiler reserves a mesh for every local variable.",ru:"Компилятор резервирует ячейку для каждой локальной переменной."}
+     ]}),
+     W('temporary','[ˈtempərəri]','рабочая ячейка памяти',{senses:[
+       {ru:'временный (прилагательное)',note:'здесь — существительное: рабочая ячейка для промежуточных значений'}
+     ],examples:[
+       {en:"The sum is stored in a temporary before being written to the result.",ru:"Сумма хранится в рабочей ячейке памяти, прежде чем её запишут в результат."},
+       {en:"Use a temporary to swap the two values.",ru:"Используй рабочую ячейку памяти, чтобы поменять местами два значения."}
+     ]}),
+     W('jump','[dʒʌmp]','переходить / переход',{examples:[
+       {en:"The program makes a jump to the error-handling block.",ru:"Программа совершает переход к блоку обработки ошибок."},
+       {en:"An unconditional jump always goes to the same instruction.",ru:"Безусловный переход всегда ведёт к одной и той же инструкции."}
+     ]}),
+     W('job','[dʒɒb]','задача',{senses:[
+       {ru:'работа, задание (общее значение)',note:'в ОС — единица работы, поданная в систему'}
+     ],examples:[
+       {en:"The system queued the job and ran it when a processor was free.",ru:"Система поставила задачу в очередь и запустила её, когда освободился процессор."},
+       {en:"Each job gets its own memory allocation.",ru:"Каждая задача получает собственное выделение памяти."}
+     ]}),
+     W('job control','[dʒɒb kənˈtrəʊl]','управление потоком заданий',{examples:[
+       {en:"Job control decides the order in which tasks are executed.",ru:"Управление потоком заданий определяет порядок выполнения задач."},
+       {en:"Job control statements tell the system how to run the program.",ru:"Операторы управления потоком заданий сообщают системе, как запускать программу."}
+     ]})
+   ]},
+   {id:'systems',title:'Системы и библиотеки',words:[
+     W('SRU (system resident unit)','[ˌes ɑːr ˈjuː] [ˈsɪstəm ˈrezɪdənt ˈjuːnɪt]','системное резидентное устройство',{examples:[
+       {en:"The SRU stays in main memory while the system is running.",ru:"Системное резидентное устройство остаётся в оперативной памяти, пока система работает."},
+       {en:"Part of the operating system is loaded as an SRU at startup.",ru:"Часть операционной системы загружается как системное резидентное устройство при запуске."}
+     ]}),
+     W('supervisor','[ˈsjuːpəvaɪzə]','наблюдатель',{senses:[
+       {ru:'начальник, руководитель (общее значение)',note:'в ОС — главная управляющая программа, а не человек'}
+     ],examples:[
+       {en:"The supervisor decides which program gets control of the processor.",ru:"Наблюдатель решает, какая программа получает управление процессором."},
+       {en:"All interrupts are first handled by the supervisor.",ru:"Все прерывания сначала обрабатывает наблюдатель."}
+     ]}),
+     W('library','[ˈlaɪbrəri]','библиотека',{senses:[
+       {ru:'набор готовых инструментов, фреймворк',note:'в коде часто говорят просто «подключить библиотеку»'}
+     ],examples:[
+       {en:"We imported a library instead of writing the math functions ourselves.",ru:"Мы подключили библиотеку вместо того, чтобы писать математические функции самим."},
+       {en:"The standard library already has a function for sorting arrays.",ru:"В стандартной библиотеке уже есть функция для сортировки массивов."}
+     ]}),
+     W('RL (relocatable library)','[ˌɑːr ˈel] [ˌriːləʊˈkeɪtəbl ˈlaɪbrəri]','перемещаемая библиотека',{examples:[
+       {en:"A relocatable library can be loaded at any free address in memory.",ru:"Перемещаемую библиотеку можно загрузить по любому свободному адресу в памяти."},
+       {en:"The linker pulls modules from the RL as needed.",ru:"Редактор связей подтягивает модули из перемещаемой библиотеки по мере необходимости."}
+     ]}),
+     W('CIL (core image library)','[ˌsiː aɪ ˈel] [kɔː ˈɪmɪdʒ ˈlaɪbrəri]','библиотека абсолютных модулей',{examples:[
+       {en:"The CIL stores ready-to-run programs as absolute modules.",ru:"Библиотека абсолютных модулей хранит готовые к запуску программы."},
+       {en:"Loading from the CIL is faster because no relocation is needed.",ru:"Загрузка из библиотеки абсолютных модулей идёт быстрее, потому что перемещение не требуется."}
+     ]}),
+     W('SSL (source statement library)','[ˌes es ˈel] [sɔːs ˈsteɪtmənt ˈlaɪbrəri]','библиотека исходных приложений',{examples:[
+       {en:"The SSL keeps the original source code of every application.",ru:"Библиотека исходных приложений хранит исходный код каждого приложения."},
+       {en:"She pulled the macro definitions straight from the SSL.",ru:"Она взяла определения макросов прямо из библиотеки исходных приложений."}
+     ]}),
+     W('librarian','[laɪˈbreəriən]','программа «Библиотекарь»',{examples:[
+       {en:"The librarian program adds, deletes, and updates modules inside the library.",ru:"Программа «Библиотекарь» добавляет, удаляет и обновляет модули внутри библиотеки."},
+       {en:"Run the librarian to list every module stored in the file.",ru:"Запусти «Библиотекарь», чтобы вывести список всех модулей, хранящихся в файле."}
+     ]}),
+     W('linkage editor','[ˈlɪŋkɪdʒ ˈedɪtə]','программа «Редактор связей»',{examples:[
+       {en:"The linkage editor combines separate object modules into one program.",ru:"«Редактор связей» объединяет отдельные объектные модули в одну программу."},
+       {en:"The linkage editor resolves every external reference before the program runs.",ru:"«Редактор связей» разрешает все внешние ссылки до того, как программа запустится."}
+     ]}),
+     W('IPL (initial program loading)','[ˌaɪ piː ˈel] [ɪˈnɪʃl ˈprəʊɡræm ˈləʊdɪŋ]','начальная загрузка программ',{examples:[
+       {en:"IPL happens automatically every time the mainframe is powered on.",ru:"Начальная загрузка программ происходит автоматически при каждом включении мэйнфрейма."},
+       {en:"The operator triggered an IPL after installing the update.",ru:"Оператор запустил начальную загрузку программ после установки обновления."}
+     ]})
+   ]},
+   {id:'tools',title:'Инструменты и прерывания',words:[
+     W('tools','[tuːlz]','инструменты',{examples:[
+       {en:"Compilers, assemblers, and editors are all examples of software tools.",ru:"Компиляторы, ассемблеры и редакторы — всё это примеры программных инструментов."},
+       {en:"A good set of tools makes development much faster.",ru:"Хороший набор инструментов сильно ускоряет разработку."}
+     ]}),
+     W('shorthand','[ˈʃɔːthænd]','стенограмма, стенография, краткая запись чего-либо',{senses:[
+       {ru:'стенография (как профессия, навык)',note:'историческое значение — быстрая ручная запись речи'}
+     ],examples:[
+       {en:"The term is just shorthand for 'initial program loading'.",ru:"Этот термин — просто краткая запись для «начальной загрузки программы»."},
+       {en:"She used shorthand to take notes during the lecture.",ru:"Она использовала стенографию, чтобы записывать лекцию."}
+     ]}),
+     W('processor','[ˈprəʊsesə]','программа «Переводчик»',{senses:[
+       {ru:'процессор (аппаратный, CPU)',note:'здесь — именно программа-переводчик, а не физический чип'}
+     ],examples:[
+       {en:"The processor translates the source program into machine code.",ru:"Программа «Переводчик» преобразует исходную программу в машинный код."},
+       {en:"Every high-level language needs its own processor or compiler.",ru:"Каждому языку высокого уровня нужен свой «Переводчик» или компилятор."}
+     ]}),
+     W('interrupt','[ˌɪntəˈrʌpt]','прерывать / прерывание',{examples:[
+       {en:"A hardware interrupt stops the current program to handle an urgent event.",ru:"Аппаратное прерывание останавливает текущую программу, чтобы обработать срочное событие."},
+       {en:"The keyboard sends an interrupt every time a key is pressed.",ru:"Клавиатура посылает прерывание каждый раз при нажатии клавиши."}
+     ]}),
+     W('interruption','[ˌɪntəˈrʌpʃn]','прерывание / результат',{examples:[
+       {en:"The interruption lasted only a few milliseconds.",ru:"Прерывание длилось всего несколько миллисекунд."},
+       {en:"After the interruption, control returns to the original program.",ru:"После прерывания управление возвращается к исходной программе."}
+     ]}),
+     W('turn','[tɜːn]','передавать',{senses:[
+       {ru:'поворачивать, превращаться (общее значение)',note:'здесь — именно «передавать управление»'}
+     ],examples:[
+       {en:"Once this task finishes, it's time to turn control over to the operating system.",ru:"Как только эта задача завершится, настанет время передать управление операционной системе."},
+       {en:"Once the task is done, the system turns control back to the user.",ru:"Как только задача выполнена, система передаёт управление обратно пользователю."}
+     ]}),
+     W('initiate','[ɪˈnɪʃieɪt]','выдвигать (инициировать)',{ruAcc:['выдвигать','инициировать','выдвигать (инициировать)'],examples:[
+       {en:"The operator can initiate the backup process from the console.",ru:"Оператор может инициировать процесс резервного копирования с консоли."},
+       {en:"A single command initiates the entire installation.",ru:"Одна команда инициирует всю установку."}
+     ]})
+   ]},
+   {id:"memory",title:"Память и данные",words:[
+     W("memory","[ˈmeməri]","память",{senses:[{ru:"память (способность помнить)",note:"у человека тоже memory; в IT — устройство, где хранятся данные и программы"}],examples:[{en:"The program needs more memory to open large files.",ru:"Программе нужно больше памяти, чтобы открывать большие файлы."},{en:"Memory is cleared when the computer is turned off.",ru:"Содержимое памяти стирается, когда компьютер выключают."}]}),
+     W("storage","[ˈstɔːrɪdʒ]","хранилище, хранение данных",{examples:[{en:"This disk has plenty of storage for your photos.",ru:"На этом диске достаточно места для твоих фотографий."},{en:"Storage is slower than memory, but it keeps data after the power is off.",ru:"Хранилище работает медленнее памяти, но сохраняет данные после отключения питания."}]}),
+     W("byte","[baɪt]","байт",{examples:[{en:"One byte is made of eight bits.",ru:"Один байт состоит из восьми бит."},{en:"The file is only a few hundred bytes long.",ru:"Размер файла — всего несколько сотен байт."}]}),
+     W("binary","[ˈbaɪnəri]","двоичный",{examples:[{en:"Computers store all information in binary form.",ru:"Компьютеры хранят всю информацию в двоичном виде."},{en:"The binary system uses only zero and one.",ru:"Двоичная система использует только ноль и единицу."}]}),
+     W("array","[əˈreɪ]","массив",{senses:[{ru:"набор, множество (общее значение)",note:"вне IT — «ряд, широкий выбор», например an array of colours"}],examples:[{en:"An array holds many values of the same type under one name.",ru:"Массив хранит много значений одного типа под одним именем."},{en:"The first element of the array has the number zero.",ru:"Первый элемент массива имеет номер ноль."}]}),
+     W("element","[ˈelɪmənt]","элемент",{examples:[{en:"Every element of the array has its own number.",ru:"У каждого элемента массива есть свой номер."},{en:"Delete the last element to make the list shorter.",ru:"Удали последний элемент, чтобы список стал короче."}]}),
+     W("address","[əˈdres]","адрес",{senses:[{ru:"обращаться к чему-либо (глагол)",note:"to address a problem — заняться проблемой; в IT — «адресовать» ячейку или устройство"}],examples:[{en:"Every memory cell has its own address.",ru:"У каждой ячейки памяти есть свой адрес."},{en:"The program jumps to the address stored in this variable.",ru:"Программа переходит по адресу, который хранится в этой переменной."}]}),
+     W("location","[ləʊˈkeɪʃn]","место, расположение",{examples:[{en:"The file is saved in a different location.",ru:"Файл сохранён в другом месте."},{en:"Each variable has a location in memory.",ru:"У каждой переменной есть своё место в памяти."}]}),
+     W("allocation","[ˌæləˈkeɪʃn]","выделение (памяти, ресурсов)",{examples:[{en:"Memory allocation happens while the program is running.",ru:"Выделение памяти происходит во время работы программы."},{en:"Poor allocation can waste a lot of space.",ru:"Неудачное выделение ресурсов может впустую расходовать много места."}]}),
+     W("cache","[kæʃ]","кэш",{examples:[{en:"The cache keeps recent data close to the processor for quick access.",ru:"Кэш хранит недавние данные рядом с процессором для быстрого доступа."},{en:"Clear the cache if the page shows old information.",ru:"Очисти кэш, если страница показывает старую информацию."}]}),
+     W("absolute","[ˈæbsəluːt]","абсолютный",{senses:[{ru:"полный, совершенный",note:"absolute silence — полная тишина"}],examples:[{en:"An absolute address always points to the same place in memory.",ru:"Абсолютный адрес всегда указывает на одно и то же место в памяти."},{en:"Absolute modules do not need relocation.",ru:"Абсолютным модулям не нужно перемещение."}]}),
+     W("external","[ɪkˈstɜːnl]","внешний",{examples:[{en:"An external disk stores a copy of all my files.",ru:"Внешний диск хранит копию всех моих файлов."},{en:"This module calls an external function from another library.",ru:"Этот модуль вызывает внешнюю функцию из другой библиотеки."}]}),
+     W("reference","[ˈrefrəns]","ссылка (на данные или объект)",{senses:[{ru:"справка, упоминание",note:"reference book — справочник; reference to a source — ссылка на источник"}],examples:[{en:"A reference points to the place where the data is stored.",ru:"Ссылка указывает на место, где хранятся данные."},{en:"Passing a reference is faster than copying all the data.",ru:"Передать ссылку быстрее, чем копировать все данные."}]}),
+     W("input","[ˈɪnpʊt]","ввод, входные данные",{senses:[{ru:"вклад, мнение (в разговоре)",note:"I need your input — мне нужно твоё мнение"}],examples:[{en:"The program waits for input from the keyboard.",ru:"Программа ждёт ввода с клавиатуры."},{en:"Wrong input is the most common cause of errors.",ru:"Неверные входные данные — самая частая причина ошибок."}]}),
+     W("file","[faɪl]","файл",{senses:[{ru:"папка с документами; напильник",note:"вне IT — подшивка бумаг или инструмент"}],examples:[{en:"Save the file before you close the program.",ru:"Сохрани файл, прежде чем закрывать программу."},{en:"This file contains the source code of the whole project.",ru:"В этом файле лежит исходный код всего проекта."}]}),
+     W("permission","[pəˈmɪʃn]","разрешение; право доступа",{senses:[{ru:"права доступа (во мн. ч. — permissions)",note:"в файловых системах так называют права на чтение, запись и запуск"}],examples:[{en:"You need permission to change this file.",ru:"Чтобы изменить этот файл, нужно разрешение."},{en:"Only the owner has permission to delete these files.",ru:"Только у владельца есть право удалять эти файлы."}]}),
+     W("query","[ˈkwɪəri]","запрос (к базе данных)",{senses:[{ru:"вопрос, сомнение",note:"в обычной речи — официальный вопрос или уточнение"}],examples:[{en:"The query returns all users who came in today.",ru:"Запрос возвращает всех пользователей, которые заходили сегодня."},{en:"A slow query can make the whole site wait.",ru:"Медленный запрос может заставить ждать весь сайт."}]}),
+     W("disk","[dɪsk]","диск",{examples:[{en:"The disk is full, so the file cannot be saved.",ru:"Диск заполнен, поэтому файл нельзя сохранить."},{en:"A fast disk loads the program in a few seconds.",ru:"Быстрый диск загружает программу за несколько секунд."}]}),
+     W("copy","[ˈkɒpi]","копировать; копия",{senses:[{ru:"экземпляр (книги, газеты)",note:"a copy of a book — экземпляр книги"}],examples:[{en:"Make a copy of the file before you change it.",ru:"Сделай копию файла, прежде чем его менять."},{en:"You can copy the data to another disk.",ru:"Данные можно скопировать на другой диск."}]}),
+     W("backup","[ˈbækʌp]","резервная копия",{examples:[{en:"Make a backup before you update the system.",ru:"Сделай резервную копию, прежде чем обновлять систему."},{en:"The backup saved all our data after the disk failed.",ru:"Резервная копия спасла все наши данные, когда диск вышел из строя."}]}),
+     W("corrupt","[kəˈrʌpt]","повреждать; повреждённый",{senses:[{ru:"продажный, коррумпированный",note:"о людях и организациях: corrupt officials"}],examples:[{en:"A power cut can corrupt the file you are saving.",ru:"Отключение электричества может повредить файл, который ты сохраняешь."},{en:"The program cannot open a corrupt file.",ru:"Программа не может открыть повреждённый файл."}]}),
+     W("delete","[dɪˈliːt]","удалять",{examples:[{en:"Delete the old files to free some space.",ru:"Удали старые файлы, чтобы освободить место."},{en:"The program deletes the line when you press this key.",ru:"Программа удаляет строку, когда ты нажимаешь эту клавишу."}]})
+   ]},
+   {id:"build",title:"Компиляция и запуск",words:[
+     W("compiler","[kəmˈpaɪlə]","компилятор",{examples:[{en:"The compiler turns source code into machine code.",ru:"Компилятор превращает исходный код в машинный."},{en:"The compiler found three errors in my program.",ru:"Компилятор нашёл три ошибки в моей программе."}]}),
+     W("assembler","[əˈsemblə]","ассемблер",{senses:[{ru:"сборщик (профессия)",note:"вне IT — рабочий, который собирает изделие"}],examples:[{en:"An assembler changes short commands into machine code.",ru:"Ассемблер превращает короткие команды в машинный код."},{en:"She wrote the first version of the program in assembler.",ru:"Первую версию программы она написала на ассемблере."}]}),
+     W("source code","[sɔːs kəʊd]","исходный код",{examples:[{en:"Anyone can read the source code of this program.",ru:"Любой может прочитать исходный код этой программы."},{en:"Save the source code before you start the compiler.",ru:"Сохрани исходный код, прежде чем запускать компилятор."}]}),
+     W("machine code","[məˈʃiːn kəʊd]","машинный код",{examples:[{en:"The processor can run only machine code.",ru:"Процессор может выполнять только машинный код."},{en:"Machine code is hard for a person to read.",ru:"Машинный код трудно читать человеку."}]}),
+     W("module","[ˈmɒdjuːl]","модуль",{examples:[{en:"Each module does one job and does it well.",ru:"Каждый модуль выполняет одну задачу и делает это хорошо."},{en:"A new module was added to the library last week.",ru:"На прошлой неделе в библиотеку добавили новый модуль."}]}),
+     W("macro","[ˈmækrəʊ]","макрос, макрокоманда",{examples:[{en:"A macro replaces one short name with many lines of code.",ru:"Макрос заменяет одно короткое имя множеством строк кода."},{en:"She used a macro to repeat the same steps again and again.",ru:"Она использовала макрос, чтобы снова и снова повторять одни и те же шаги."}]}),
+     W("linker","[ˈlɪŋkə]","компоновщик (программа связывания)",{senses:[{ru:"ближайший аналог",note:"по смыслу близок к linkage editor — «редактору связей»"}],examples:[{en:"The linker joins all the parts into one program.",ru:"Компоновщик соединяет все части в одну программу."},{en:"The linker reported that one function was missing.",ru:"Компоновщик сообщил, что не хватает одной функции."}]}),
+     W("relocation","[ˌriːləʊˈkeɪʃn]","перемещение (программы в памяти)",{senses:[{ru:"переезд (о людях, офисе)",note:"вне IT — relocation of a company, переезд компании"}],examples:[{en:"Relocation lets a program run from any address in memory.",ru:"Перемещение позволяет программе работать с любого адреса в памяти."},{en:"Relocation changes the addresses inside the program.",ru:"При перемещении меняются адреса внутри программы."}]}),
+     W("breakpoint","[ˈbreɪkpɔɪnt]","точка останова",{examples:[{en:"Set a breakpoint to stop the program on this line.",ru:"Поставь точку останова, чтобы программа остановилась на этой строке."},{en:"The debugger stopped at the breakpoint.",ru:"Отладчик остановился на точке останова."}]}),
+     W("execute","[ˈeksɪkjuːt]","выполнять (команду, программу)",{senses:[{ru:"осуществлять, проводить в жизнь",note:"execute a plan — выполнить план"}],examples:[{en:"The processor can execute millions of instructions in one second.",ru:"Процессор может выполнять миллионы команд за одну секунду."},{en:"Press the key to execute the command.",ru:"Нажми клавишу, чтобы выполнить команду."}]}),
+     W("load","[ləʊd]","загружать",{senses:[{ru:"груз, нагрузка (сущ.)",note:"the load on the server — нагрузка на сервер"}],examples:[{en:"The system will load the program into memory.",ru:"Система загрузит программу в память."},{en:"It takes a few seconds to load a large file.",ru:"На загрузку большого файла уходит несколько секунд."}]}),
+     W("initialize","[ɪˈnɪʃəlaɪz]","инициализировать, задать начальное значение",{examples:[{en:"You must initialize the variable before you use it.",ru:"Нужно задать переменной начальное значение, прежде чем её использовать."},{en:"The system will initialize all the cells to zero.",ru:"Система задаст всем ячейкам начальное значение ноль."}]}),
+     W("translate","[trænsˈleɪt]","переводить; транслировать",{examples:[{en:"Translate the sentence into English.",ru:"Переведи предложение на английский."},{en:"The compiler will translate your program into machine code.",ru:"Компилятор переведёт твою программу в машинный код."}]}),
+     W("install","[ɪnˈstɔːl]","устанавливать",{examples:[{en:"Install the program on your computer.",ru:"Установи программу на свой компьютер."},{en:"It takes about ten minutes to install the system.",ru:"Установка системы занимает около десяти минут."}]}),
+     W("installation","[ˌɪnstəˈleɪʃn]","установка",{examples:[{en:"The installation failed because the disk was full.",ru:"Установка не удалась, потому что диск был заполнен."},{en:"Follow the installation guide step by step.",ru:"Выполняй указания по установке шаг за шагом."}]}),
+     W("import","[ɪmˈpɔːt]","импортировать, подключать",{senses:[{ru:"ввоз товаров (сущ.)",note:"вне IT — товары, ввезённые из другой страны"}],examples:[{en:"Import the library at the top of the file.",ru:"Подключи библиотеку в начале файла."},{en:"You can import data from another program.",ru:"Данные можно импортировать из другой программы."}]}),
+     W("convert","[kənˈvɜːt]","преобразовывать, переводить",{examples:[{en:"Convert the number to binary form.",ru:"Преврати число в двоичный вид."},{en:"This tool can convert text files to another form.",ru:"Этот инструмент умеет преобразовывать текстовые файлы в другой вид."}]}),
+     W("validate","[ˈvælɪdeɪt]","проверять корректность, подтверждать",{examples:[{en:"The program must validate the input before using it.",ru:"Программа должна проверить ввод, прежде чем его использовать."},{en:"Tests validate that the code works as we expect.",ru:"Тесты подтверждают, что код работает так, как мы ожидаем."}]}),
+     W("resolve","[rɪˈzɒlv]","разрешать (ссылку, конфликт); решать",{senses:[{ru:"решимость (сущ.)",note:"твёрдое намерение: strong resolve"}],examples:[{en:"The linker will resolve each name to a real address.",ru:"Компоновщик сопоставит каждому имени настоящий адрес."},{en:"Please resolve the problem before the meeting.",ru:"Реши эту проблему до встречи."}]}),
+     W("update","[ʌpˈdeɪt]","обновлять; обновление",{examples:[{en:"Update the program to get the new features.",ru:"Обнови программу, чтобы получить новые возможности."},{en:"The last update fixed two bugs.",ru:"Последнее обновление исправило две ошибки."}]}),
+     W("print","[prɪnt]","печатать, выводить",{examples:[{en:"The program will print the result on the screen.",ru:"Программа выведет результат на экран."},{en:"Print the page and bring it to the lecture.",ru:"Распечатай страницу и принеси её на лекцию."}]})
+   ]},
+   {id:"sysx",title:"Система и пользователи",words:[
+     W("mainframe","[ˈmeɪnfreɪm]","мэйнфрейм, большая ЭВМ",{examples:[{en:"A bank can process millions of payments on one mainframe.",ru:"Банк может обрабатывать миллионы платежей на одном мэйнфрейме."},{en:"Many old programs still run on the mainframe.",ru:"Многие старые программы до сих пор работают на мэйнфрейме."}]}),
+     W("console","[ˈkɒnsəʊl]","консоль, пульт управления",{senses:[{ru:"игровая приставка",note:"game console — игровая приставка"}],examples:[{en:"The operator typed the command on the console.",ru:"Оператор набрал команду на пульте управления."},{en:"Error messages appear on the console.",ru:"Сообщения об ошибках появляются в консоли."}]}),
+     W("operator","[ˈɒpəreɪtə]","оператор",{senses:[{ru:"знак действия (+, −, =)",note:"в языках программирования operator — не человек, а символ операции"}],examples:[{en:"The operator starts the job every morning.",ru:"Оператор запускает задание каждое утро."},{en:"The plus sign is an operator that adds two numbers.",ru:"Знак плюс — это оператор, который складывает два числа."}]}),
+     W("operating system","[ˈɒpəreɪtɪŋ ˈsɪstəm]","операционная система",{examples:[{en:"The operating system manages the memory and all the devices.",ru:"Операционная система управляет памятью и всеми устройствами."},{en:"Windows and Linux are two well-known operating systems.",ru:"Windows и Linux — две известные операционные системы."}]}),
+     W("CPU (central processing unit)","[ˌsiː piː ˈjuː] [ˈsentrəl ˈprəʊsesɪŋ ˈjuːnɪt]","центральный процессор",{examples:[{en:"The CPU does all the counting in the computer.",ru:"Центральный процессор выполняет все вычисления в компьютере."},{en:"Heavy programs put a high load on the CPU.",ru:"Тяжёлые программы сильно нагружают центральный процессор."}]}),
+     W("hardware","[ˈhɑːdweə]","аппаратное обеспечение, «железо»",{examples:[{en:"Hardware means all the physical parts of a computer.",ru:"Hardware — это все физические части компьютера."},{en:"This software does not work with old hardware.",ru:"Эта программа не работает на старом оборудовании."}]}),
+     W("software","[ˈsɒftweə]","программное обеспечение",{examples:[{en:"Software is the set of programs that a computer runs.",ru:"Программное обеспечение — это набор программ, которые выполняет компьютер."},{en:"This software is free for students.",ru:"Это программное обеспечение бесплатно для студентов."}]}),
+     W("device","[dɪˈvaɪs]","устройство",{senses:[{ru:"приём, уловка",note:"в литературе: stylistic device — стилистический приём"}],examples:[{en:"A keyboard is an input device.",ru:"Клавиатура — устройство ввода."},{en:"The system found a new device and asked for a driver.",ru:"Система обнаружила новое устройство и запросила драйвер."}]}),
+     W("driver","[ˈdraɪvə]","драйвер (программа управления устройством)",{senses:[{ru:"водитель",note:"вне IT — человек за рулём машины"}],examples:[{en:"The device does not work without the right driver.",ru:"Без нужного драйвера устройство не работает."},{en:"Update the driver if the screen shows strange pictures.",ru:"Обнови драйвер, если на экране появляются странные картинки."}]}),
+     W("keyboard","[ˈkiːbɔːd]","клавиатура",{examples:[{en:"Type your name on the keyboard.",ru:"Набери своё имя на клавиатуре."},{en:"The keyboard sends a message to the computer each time you press a key.",ru:"Клавиатура посылает компьютеру сообщение каждый раз, когда ты нажимаешь клавишу."}]}),
+     W("mouse","[maʊs]","мышь (компьютерная)",{senses:[{ru:"мышь (животное)",note:"вне IT — маленький грызун; множественное число — mice"}],examples:[{en:"Click the button with the mouse.",ru:"Нажми кнопку мышью."},{en:"You can move the window with the mouse.",ru:"Окно можно двигать мышью."}]}),
+     W("server","[ˈsɜːvə]","сервер",{senses:[{ru:"официант",note:"server — также «человек, который подаёт еду»"}],examples:[{en:"The server answers every user in less than a second.",ru:"Сервер отвечает каждому пользователю меньше чем за секунду."},{en:"Our program runs on a powerful server.",ru:"Наша программа работает на мощном сервере."}]}),
+     W("screen","[skriːn]","экран",{senses:[{ru:"ширма; проверять (глагол)",note:"to screen — просеивать, отбирать"}],examples:[{en:"The result appears on the screen.",ru:"Результат появляется на экране."},{en:"Use a bigger screen to see the whole table.",ru:"Возьми экран побольше, чтобы видеть всю таблицу."}]}),
+     W("window","[ˈwɪndəʊ]","окно (на экране)",{senses:[{ru:"окно здания",note:"вне IT — окно в стене дома"}],examples:[{en:"Close the window and open the file again.",ru:"Закрой окно и снова открой файл."},{en:"Each application opens in its own window.",ru:"Каждое приложение открывается в своём окне."}]}),
+     W("button","[ˈbʌtn]","кнопка",{senses:[{ru:"пуговица",note:"вне IT — пуговица на одежде"}],examples:[{en:"Press the button to start the program.",ru:"Нажми кнопку, чтобы запустить программу."},{en:"The button is on the left side of the screen.",ru:"Кнопка находится в левой части экрана."}]}),
+     W("click","[klɪk]","щёлкать мышью; щелчок",{examples:[{en:"Click the button twice to open the file.",ru:"Щёлкни по кнопке дважды, чтобы открыть файл."},{en:"One click is enough to start the program.",ru:"Одного щелчка достаточно, чтобы запустить программу."}]}),
+     W("user","[ˈjuːzə]","пользователь",{examples:[{en:"The user can choose any file from the list.",ru:"Пользователь может выбрать любой файл из списка."},{en:"Each user sees only his own files.",ru:"Каждый пользователь видит только свои файлы."}]}),
+     W("login","[ˈlɒɡɪn]","вход в систему, логин",{senses:[{ru:"войти в систему (log in — глагол)",note:"как глагол пишется раздельно: log in"}],examples:[{en:"The login failed because the name was wrong.",ru:"Войти в систему не удалось, потому что имя было неверным."},{en:"Use the same login on every computer.",ru:"Используй один и тот же логин на каждом компьютере."}]}),
+     W("application","[ˌæplɪˈkeɪʃn]","приложение, программа",{senses:[{ru:"заявление; применение",note:"job application — заявление о приёме на работу; сокращённо приложение — app"}],examples:[{en:"This application helps users to learn new words.",ru:"Это приложение помогает пользователям учить новые слова."},{en:"Each application has its own window.",ru:"У каждого приложения своё окно."}]}),
+     W("app","[æp]","приложение (сокращение от application)",{examples:[{en:"I use a free app to learn new words.",ru:"Я пользуюсь бесплатным приложением, чтобы учить новые слова."},{en:"This app works on every phone.",ru:"Это приложение работает на любом телефоне."}]}),
+     W("framework","[ˈfreɪmwɜːk]","фреймворк, программная платформа",{senses:[{ru:"каркас, основа",note:"вообще — структура, которая что-то поддерживает"}],examples:[{en:"A framework gives you ready parts to build an application.",ru:"Фреймворк даёт готовые части для создания приложения."},{en:"Learn the basics of the language before you choose a framework.",ru:"Выучи основы языка, прежде чем выбирать фреймворк."}]}),
+     W("feature","[ˈfiːtʃə]","функция, возможность (программы)",{senses:[{ru:"черта (лица); художественный фильм",note:"facial features — черты лица"}],examples:[{en:"The new version has a useful feature for sharing files.",ru:"В новой версии есть полезная функция для обмена файлами."},{en:"Which features do you use most often?",ru:"Какими возможностями ты пользуешься чаще всего?"}]}),
+     W("component","[kəmˈpəʊnənt]","компонент",{examples:[{en:"Each component of the system has its own task.",ru:"У каждого компонента системы своя задача."},{en:"The processor is the most important component of a computer.",ru:"Процессор — самый важный компонент компьютера."}]}),
+     W("command","[kəˈmɑːnd]","команда",{senses:[{ru:"приказывать; владеть (языком)",note:"to command — приказывать; command of English — владение английским"}],examples:[{en:"Type the command and press Enter.",ru:"Введи команду и нажми Enter."},{en:"This command deletes every file on the disk.",ru:"Эта команда удаляет все файлы на диске."}]}),
+     W("queue","[kjuː]","очередь; ставить в очередь",{senses:[{ru:"очередь людей",note:"a queue at the bank — очередь в банке (британский вариант)"}],examples:[{en:"Jobs wait in a queue until the processor is free.",ru:"Задания ждут в очереди, пока процессор не освободится."},{en:"Queue the task and go on with your work.",ru:"Поставь задачу в очередь и продолжай работу."}]}),
+     W("schedule","[ˈʃedjuːl]","планировать, составлять расписание; расписание",{examples:[{en:"The system will schedule each job in turn.",ru:"Система будет планировать каждое задание по очереди."},{en:"The schedule shows when the next train comes.",ru:"Расписание поездов показывает, когда придёт следующий поезд."}]}),
+     W("startup","[ˈstɑːtʌp]","запуск (системы)",{senses:[{ru:"стартап, молодая компания",note:"a startup — небольшая новая технологическая компания"}],examples:[{en:"Startup takes longer when many programs are installed.",ru:"Запуск идёт дольше, когда установлено много программ."},{en:"The system checks the memory at startup.",ru:"При запуске система проверяет память."}]}),
+     W("task","[tɑːsk]","задача, задание (небольшая единица работы)",{senses:[{ru:"чем отличается от job",note:"job — крупное задание, поданное в систему; task — отдельный шаг внутри него"}],examples:[{en:"Each task in the list takes about five minutes.",ru:"Каждая задача в списке занимает около пяти минут."},{en:"The system can do several tasks at the same time.",ru:"Система может выполнять несколько задач одновременно."}]})
+   ]},
+   {id:"errors",title:"Ошибки и сбои",words:[
+     W("error","[ˈerə]","ошибка",{examples:[{en:"The program shows an error when the file is missing.",ru:"Программа показывает ошибку, когда файла нет."},{en:"A small error can stop the whole system.",ru:"Маленькая ошибка может остановить всю систему."}]}),
+     W("bug","[bʌɡ]","баг, ошибка в программе",{senses:[{ru:"жук, насекомое",note:"вне IT — маленькое насекомое"}],examples:[{en:"We found a bug in the login function.",ru:"Мы нашли баг в функции входа."},{en:"The bug appears only when the input is empty.",ru:"Баг появляется только тогда, когда ввод пустой."}]}),
+     W("warning","[ˈwɔːnɪŋ]","предупреждение",{examples:[{en:"The compiler shows a warning, but the program still works.",ru:"Компилятор показывает предупреждение, но программа всё равно работает."},{en:"Read each warning before you go on.",ru:"Читай каждое предупреждение, прежде чем продолжить."}]}),
+     W("failure","[ˈfeɪljə]","сбой, отказ, неудача",{examples:[{en:"A power failure stopped the whole system.",ru:"Сбой питания остановил всю систему."},{en:"The failure of one disk should not destroy the data.",ru:"Отказ одного диска не должен уничтожить данные."}]}),
+     W("freeze","[friːz]","зависать",{senses:[{ru:"замерзать, замораживать",note:"вне IT — когда вода превращается в лёд"}],examples:[{en:"The program may freeze if the input is too long.",ru:"Программа может зависнуть, если ввод слишком длинный."},{en:"The screen began to freeze every few seconds.",ru:"Экран начал зависать каждые несколько секунд."}]}),
+     W("trigger","[ˈtrɪɡə]","запускать, вызывать",{senses:[{ru:"спусковой крючок (сущ.)",note:"вне IT — деталь, которую нажимают, чтобы запустить механизм"}],examples:[{en:"A single click can trigger the whole process.",ru:"Один щелчок может запустить весь процесс."},{en:"Pressing this key will trigger an interrupt.",ru:"Нажатие этой клавиши вызовет прерывание."}]}),
+     W("handle","[ˈhændl]","обрабатывать, справляться с",{senses:[{ru:"ручка, рукоятка (сущ.)",note:"door handle — дверная ручка"}],examples:[{en:"The program must handle every possible error.",ru:"Программа должна обрабатывать любую возможную ошибку."},{en:"This server can handle a thousand users at the same time.",ru:"Этот сервер справляется с тысячей пользователей одновременно."}]}),
+     W("logging","[ˈlɒɡɪŋ]","логирование, ведение журнала",{senses:[{ru:"вырубка леса",note:"вне IT — заготовка древесины"}],examples:[{en:"Logging records everything the program does.",ru:"Логирование записывает всё, что делает программа."},{en:"Turn on logging to find the cause of the failure.",ru:"Включи логирование, чтобы найти причину сбоя."}]}),
+     W("urgent","[ˈɜːdʒənt]","срочный",{examples:[{en:"Fix the urgent errors first and leave the small ones for later.",ru:"Сначала исправь срочные ошибки, а мелкие оставь на потом."},{en:"Send an urgent message to the operator.",ru:"Отправь оператору срочное сообщение."}]}),
+     W("millisecond","[ˈmɪlɪsekənd]","миллисекунда",{examples:[{en:"There are one thousand milliseconds in a second.",ru:"В одной секунде тысяча миллисекунд."},{en:"A fast processor answers in a few milliseconds.",ru:"Быстрый процессор отвечает за несколько миллисекунд."}]})
+   ]},
+   {id:"lang",title:"Конструкции языка",words:[
+     W("instruction","[ɪnˈstrʌkʃn]","инструкция; команда процессора",{senses:[{ru:"указание, наставление",note:"instructions — инструкция по применению или указания"}],examples:[{en:"Each instruction tells the processor to do one small step.",ru:"Каждая команда сообщает процессору, что нужно сделать один маленький шаг."},{en:"Read the instructions before you install the program.",ru:"Прочитай инструкцию, прежде чем устанавливать программу."}]}),
+     W("statement","[ˈsteɪtmənt]","оператор, инструкция (в коде); заявление",{senses:[{ru:"заявление, утверждение",note:"a statement to the press — заявление для прессы"}],examples:[{en:"Each statement ends with a semicolon.",ru:"Каждый оператор заканчивается точкой с запятой."},{en:"An if statement checks a condition.",ru:"Оператор if проверяет условие."}]}),
+     W("goto statement","[ˈɡəʊtuː ˈsteɪtmənt]","оператор перехода goto",{examples:[{en:"A goto statement sends the program to another line.",ru:"Оператор goto отправляет программу на другую строку."},{en:"Too many goto statements make the code hard to read.",ru:"Слишком много операторов goto делают код трудным для чтения."}]}),
+     W("semicolon","[ˌsemiˈkəʊlən]","точка с запятой",{examples:[{en:"Do not forget the semicolon at the end of the line.",ru:"Не забудь точку с запятой в конце строки."},{en:"Without the semicolon the compiler shows an error.",ru:"Без точки с запятой компилятор показывает ошибку."}]}),
+     W("block","[blɒk]","блок",{senses:[{ru:"квартал; блокировать",note:"a city block — городской квартал; to block — загораживать, блокировать"}],examples:[{en:"A block groups several lines of code together.",ru:"Блок объединяет несколько строк кода."},{en:"The loop runs the same block again and again.",ru:"Цикл снова и снова выполняет один и тот же блок."}]}),
+     W("operation","[ˌɒpəˈreɪʃn]","операция",{senses:[{ru:"хирургическая операция; работа предприятия",note:"operation — также «хирургическое вмешательство»"}],examples:[{en:"Adding two numbers is a very simple operation.",ru:"Сложение двух чисел — простейшая операция."},{en:"Each operation takes only a tiny part of a second.",ru:"Каждая операция занимает лишь крошечную долю секунды."}]}),
+     W("structure","[ˈstrʌktʃə]","структура",{examples:[{en:"A good structure makes the program easy to change.",ru:"Хорошая структура упрощает изменение программы."},{en:"The structure of the file is explained in the manual.",ru:"Структура файла описана в руководстве."}]}),
+     W("conditional","[kənˈdɪʃənl]","условный; условная конструкция",{examples:[{en:"A conditional lets the program choose between two actions.",ru:"Условная конструкция позволяет программе выбирать между двумя действиями."},{en:"Use a conditional jump to leave the loop.",ru:"Используй условный переход, чтобы выйти из цикла."}]}),
+     W("unconditional","[ˌʌnkənˈdɪʃənl]","безусловный",{examples:[{en:"An unconditional jump is always executed.",ru:"Безусловный переход выполняется всегда."},{en:"The loop ends with an unconditional jump back to the start.",ru:"Цикл заканчивается безусловным переходом в начало."}]}),
+     W("pure","[pjʊə]","чистый (без побочных эффектов)",{senses:[{ru:"чистый, без примесей",note:"pure water — чистая вода"}],examples:[{en:"A pure function never changes any other data.",ru:"Чистая функция никогда не изменяет другие данные."},{en:"A pure function gives the same answer every time.",ru:"Чистая функция каждый раз даёт один и тот же ответ."}]})
+   ]},
+   {id:"math",title:"Алгоритмы и математика",words:[
+     W("exponential","[ˌekspəˈnenʃl]","экспоненциальный",{examples:[{en:"Exponential growth means the number gets bigger and bigger very fast.",ru:"Экспоненциальный рост означает, что число очень быстро становится всё больше и больше."},{en:"The time of this algorithm is exponential.",ru:"Время работы этого алгоритма растёт экспоненциально."}]}),
+     W("polynomial","[ˌpɒlɪˈnəʊmiəl]","полиномиальный",{senses:[{ru:"многочлен (сущ.)",note:"в математике polynomial — выражение вроде x² + 3x + 1"}],examples:[{en:"A polynomial algorithm is much faster than an exponential one.",ru:"Полиномиальный алгоритм намного быстрее экспоненциального."},{en:"Polynomial time is fast enough for most tasks.",ru:"Полиномиальное время достаточно быстрое для большинства задач."}]}),
+     W("optimal","[ˈɒptɪməl]","оптимальный",{examples:[{en:"The optimal solution uses the least memory.",ru:"Оптимальное решение использует меньше всего памяти."},{en:"This is not the optimal way to order a list.",ru:"Это не оптимальный способ упорядочить список."}]}),
+     W("optimize","[ˈɒptɪmaɪz]","оптимизировать",{examples:[{en:"We must optimize the program to save memory.",ru:"Нужно оптимизировать программу, чтобы сэкономить память."},{en:"The compiler can optimize the code automatically.",ru:"Компилятор может оптимизировать код автоматически."}]}),
+     W("optimization","[ˌɒptɪmaɪˈzeɪʃn]","оптимизация",{examples:[{en:"Optimization made the program twice as fast.",ru:"Благодаря оптимизации программа стала работать вдвое быстрее."},{en:"Too early optimization is a common mistake.",ru:"Слишком ранняя оптимизация — частая ошибка."}]}),
+     W("minimize","[ˈmɪnɪmaɪz]","минимизировать, сводить к минимуму",{senses:[{ru:"свернуть окно",note:"minimize the window — свернуть окно на экране"}],examples:[{en:"Try to minimize the number of errors.",ru:"Постарайся свести количество ошибок к минимуму."},{en:"A good plan can minimize the cost of the project.",ru:"Хороший план позволяет свести к минимуму стоимость проекта."}]}),
+     W("maximum","[ˈmæksɪməm]","максимум",{examples:[{en:"The maximum number of users is one hundred.",ru:"Максимальное число пользователей — сто."},{en:"At maximum speed the disk gets very hot.",ru:"На максимальной скорости диск сильно нагревается."}]}),
+     W("constraint","[kənˈstreɪnt]","ограничение",{examples:[{en:"The main constraint of this device is its small memory.",ru:"Главное ограничение этого устройства — малый объём памяти."},{en:"Every task has a time constraint.",ru:"У каждой задачи есть ограничение по времени."}]}),
+     W("subproblem","[ˈsʌbprɒbləm]","подзадача",{examples:[{en:"Split the big task into small subproblems.",ru:"Раздели большую задачу на небольшие подзадачи."},{en:"Each subproblem is solved only once.",ru:"Каждая подзадача решается только один раз."}]}),
+     W("overlap","[ˌəʊvəˈlæp]","перекрываться, пересекаться",{examples:[{en:"The two time periods overlap by an hour.",ru:"Эти два периода времени пересекаются на час."},{en:"If the blocks overlap, the data will be lost.",ru:"Если блоки перекрываются, данные будут потеряны."}]}),
+     W("solution","[səˈluːʃn]","решение",{senses:[{ru:"раствор",note:"в химии solution — раствор вещества в жидкости"}],examples:[{en:"Do you know a simple solution to this problem?",ru:"Ты знаешь простое решение этой задачи?"},{en:"The solution is to use a bigger array.",ru:"Решение — использовать массив побольше."}]}),
+     W("solve","[sɒlv]","решать (задачу)",{examples:[{en:"This algorithm can solve the problem in one second.",ru:"Этот алгоритм способен решить задачу за одну секунду."},{en:"It took me two days to solve this task.",ru:"Мне понадобилось два дня, чтобы решить эту задачу."}]}),
+     W("calculate","[ˈkælkjuleɪt]","вычислять, рассчитывать",{examples:[{en:"The program will calculate the sum of all the numbers.",ru:"Программа вычислит сумму всех чисел."},{en:"It is easy to calculate the cost by hand.",ru:"Стоимость легко рассчитать вручную."}]}),
+     W("sum","[sʌm]","сумма",{senses:[{ru:"денежная сумма",note:"a sum of money — сумма денег"}],examples:[{en:"The sum of two and three is five.",ru:"Сумма двух и трёх равна пяти."},{en:"The loop adds each number to the sum.",ru:"Цикл прибавляет каждое число к сумме."}]}),
+     W("square root","[skweə ruːt]","квадратный корень",{examples:[{en:"The square root of nine is three.",ru:"Квадратный корень из девяти равен трём."},{en:"The function returns the square root of the number.",ru:"Функция возвращает квадратный корень числа."}]}),
+     W("pi","[paɪ]","число «пи» (3,14…)",{examples:[{en:"The number pi begins with three point one four.",ru:"Число пи начинается с трёх целых четырнадцати сотых."},{en:"Store pi as a constant at the top of the file.",ru:"Храни число пи как константу в начале файла."}]}),
+     W("compare","[kəmˈpeə]","сравнивать",{examples:[{en:"The program will compare the two numbers.",ru:"Программа сравнит два числа."},{en:"Compare your answer with the correct one.",ru:"Сравни свой ответ с правильным."}]}),
+     W("combine","[kəmˈbaɪn]","объединять, комбинировать",{examples:[{en:"You can combine two files into one.",ru:"Можно объединить два файла в один."},{en:"This command will combine all the lines into a single text.",ru:"Эта команда объединит все строки в один текст."}]}),
+     W("coordinate","[kəʊˈɔːdɪneɪt]","координировать",{senses:[{ru:"координата (сущ.)",note:"coordinates — координаты точки на карте или графике"}],examples:[{en:"The supervisor will coordinate the work of all the programs.",ru:"Наблюдатель будет координировать работу всех программ."},{en:"It is hard to coordinate a team of ten people.",ru:"Трудно координировать работу команды из десяти человек."}]}),
+     W("swap","[swɒp]","менять местами",{senses:[{ru:"обмен (сущ.)",note:"a swap — обмен одного на другое"}],examples:[{en:"Swap the first and the last element of the array.",ru:"Поменяй местами первый и последний элементы массива."},{en:"The function will swap the two numbers.",ru:"Функция поменяет два числа местами."}]})
+   ]}
+ ]},
+ {id:"general",title:"Общий английский",sets:[
+   {id:"verbs",title:"Глаголы",words:[
+     W("describe","[dɪˈskraɪb]","описывать",{examples:[{en:"Please describe the problem in a few words.",ru:"Опиши проблему несколькими словами."},{en:"The manual describes every step of the installation.",ru:"Руководство описывает каждый шаг установки."}]}),
+     W("associate","[əˈsəʊsieɪt]","ассоциировать, связывать",{senses:[{ru:"коллега, партнёр (сущ.)",note:"associate — также «компаньон, сотрудник»"}],examples:[{en:"People often associate this language with science.",ru:"Люди часто связывают этот язык с наукой."},{en:"Each name is associated with one address.",ru:"Каждое имя связано с одним адресом."}]}),
+     W("organize","[ˈɔːɡənaɪz]","организовывать, упорядочивать",{examples:[{en:"Organize your files into groups.",ru:"Разложи файлы по группам."},{en:"She helped me organize the whole project.",ru:"Она помогла мне организовать весь проект."}]}),
+     W("bundle","[ˈbʌndl]","связка, пакет; объединять в пакет",{examples:[{en:"The program comes in a bundle with two other tools.",ru:"Эта программа идёт в одном пакете ещё с двумя инструментами."},{en:"We bundle all the files together.",ru:"Мы объединяем все файлы вместе."}]}),
+     W("rely","[rɪˈlaɪ]","полагаться, зависеть от",{examples:[{en:"You can rely on this tool; it never fails.",ru:"На этот инструмент можно положиться: он никогда не подводит."},{en:"Many programs rely on this library.",ru:"Многие программы зависят от этой библиотеки."}]}),
+     W("avoid","[əˈvɔɪd]","избегать",{examples:[{en:"Avoid long names; they are hard to read.",ru:"Избегай длинных имён: их трудно читать."},{en:"A backup helps you avoid losing data.",ru:"Резервная копия помогает не потерять данные."}]}),
+     W("encourage","[ɪnˈkʌrɪdʒ]","поощрять, побуждать",{examples:[{en:"Good tools encourage people to write clean code.",ru:"Хорошие инструменты побуждают людей писать чистый код."},{en:"The teacher encouraged us to ask questions.",ru:"Учитель поощрял нас задавать вопросы."}]}),
+     W("reduce","[rɪˈdjuːs]","уменьшать, сокращать",{examples:[{en:"This technique can reduce the size of the file.",ru:"Этот приём может уменьшить размер файла."},{en:"We want to reduce the number of mistakes.",ru:"Мы хотим сократить число ошибок."}]}),
+     W("replace","[rɪˈpleɪs]","заменять",{examples:[{en:"Replace the old driver with the new one.",ru:"Замени старый драйвер новым."},{en:"You can replace every zero with a one.",ru:"Можно заменить каждый ноль единицей."}]}),
+     W("reserve","[rɪˈzɜːv]","резервировать, оставлять про запас",{examples:[{en:"The system will reserve some memory for the new job.",ru:"Система зарезервирует часть памяти для нового задания."},{en:"Please reserve a table for us in the restaurant.",ru:"Пожалуйста, закажи для нас столик в ресторане."}]}),
+     W("drag","[dræg]","перетаскивать, тянуть",{examples:[{en:"Drag the file to the other window.",ru:"Перетащи файл в другое окно."},{en:"You can drag the block with the mouse.",ru:"Блок можно перетащить мышью."}]}),
+     W("pull","[pʊl]","тянуть, извлекать",{examples:[{en:"Pull the data from the server.",ru:"Извлеки данные с сервера."},{en:"Do not pull out the disk while it is working.",ru:"Не вытаскивай диск, пока он работает."}]}),
+     W("ignore","[ɪɡˈnɔː]","игнорировать, не обращать внимания",{examples:[{en:"The program will ignore empty lines.",ru:"Программа будет игнорировать пустые строки."},{en:"Do not ignore warnings.",ru:"Не игнорируй предупреждения."}]})
+   ]},
+   {id:"adv",title:"Описания и наречия",words:[
+     W("significantly","[sɪɡˈnɪfɪkəntli]","значительно, существенно",{examples:[{en:"The new version is significantly faster.",ru:"Новая версия работает значительно быстрее."},{en:"The cost of memory has dropped significantly.",ru:"Стоимость памяти заметно упала."}]}),
+     W("heavily","[ˈhevɪli]","сильно, в большой степени",{examples:[{en:"This program relies heavily on the library.",ru:"Эта программа сильно зависит от библиотеки."},{en:"It rained heavily all day.",ru:"Весь день шёл сильный дождь."}]}),
+     W("specifically","[spəˈsɪfɪkli]","специально, конкретно",{examples:[{en:"This tool was made specifically for students.",ru:"Этот инструмент создан специально для студентов."},{en:"Specifically, I mean the second array.",ru:"Точнее говоря, я имею в виду второй массив."}]}),
+     W("automatically","[ˌɔːtəˈmætɪkli]","автоматически",{examples:[{en:"The system saves the file automatically.",ru:"Система сохраняет файл автоматически."},{en:"The window closes automatically after five seconds.",ru:"Окно закрывается автоматически через пять секунд."}]}),
+     W("separate","[ˈseprət]","отдельный; разделять",{senses:[{ru:"разделять (глагол) — [ˈsepəreɪt]",note:"прилагательное и глагол пишутся одинаково, но произносятся по-разному"}],examples:[{en:"Keep the data in a separate file.",ru:"Храни данные в отдельном файле."},{en:"Separate the code into small parts.",ru:"Раздели код на небольшие части."}]}),
+     W("time-consuming","[ˈtaɪm kənˌsjuːmɪŋ]","трудоёмкий, отнимающий много времени",{examples:[{en:"Debugging can be very time-consuming.",ru:"Отладка может отнимать очень много времени."},{en:"Writing tests by hand is time-consuming.",ru:"Писать тесты вручную — долго и трудоёмко."}]}),
+     W("infinite","[ˈɪnfɪnət]","бесконечный",{examples:[{en:"An infinite loop never ends.",ru:"Бесконечный цикл никогда не заканчивается."},{en:"The list is not infinite; it has ten items.",ru:"Список не бесконечный: в нём десять пунктов."}]})
+   ]},
+   {id:"things",title:"Предметы и ситуации",words:[
+     W("definition","[ˌdefɪˈnɪʃn]","определение",{examples:[{en:"Write the definition of each new word in your notes.",ru:"Запиши определение каждого нового слова в свои заметки."},{en:"The definition of the function is at the top of the file.",ru:"Определение функции находится в начале файла."}]}),
+     W("usage","[ˈjuːsɪdʒ]","использование, потребление; употребление",{examples:[{en:"Check the memory usage of the program.",ru:"Проверь, сколько памяти использует программа."},{en:"The manual shows the usage of each word.",ru:"Руководство показывает, как употребляется каждое слово."}]}),
+     W("whiteboard","[ˈwaɪtbɔːd]","маркерная доска",{examples:[{en:"The teacher wrote the word on the whiteboard.",ru:"Учитель написал слово на доске."},{en:"We drew the plan on the whiteboard.",ru:"Мы нарисовали план на доске."}]}),
+     W("lecture","[ˈlektʃə]","лекция",{senses:[{ru:"нравоучение, нотация",note:"to lecture someone — читать кому-то мораль"}],examples:[{en:"The lecture about memory starts at nine.",ru:"Лекция о памяти начинается в девять."},{en:"Take notes during the lecture.",ru:"Записывай во время лекции."}]}),
+     W("transportation","[ˌtrænspɔːˈteɪʃn]","перевозка, транспорт",{examples:[{en:"Transportation of the boxes takes two days.",ru:"Перевозка коробок занимает два дня."},{en:"Public transportation is cheap in this city.",ru:"Общественный транспорт в этом городе дешёвый."}]}),
+     W("delivery","[dɪˈlɪvəri]","доставка",{examples:[{en:"The delivery takes about two days.",ru:"Доставка занимает около двух дней."},{en:"Fast delivery is important for the shop.",ru:"Быстрая доставка важна для магазина."}]}),
+     W("basics","[ˈbeɪsɪks]","основы",{examples:[{en:"Learn the basics before you try hard tasks.",ru:"Выучи основы, прежде чем браться за сложные задачи."},{en:"The course covers the basics of programming.",ru:"Курс охватывает основы программирования."}]}),
+     W("score","[skɔː]","счёт, количество очков",{senses:[{ru:"партитура; забить (глагол)",note:"to score — набирать очки"}],examples:[{en:"The program keeps the score of each player.",ru:"Программа ведёт счёт каждого игрока."},{en:"Her score in the test was the best in the class.",ru:"Её результат в тесте был лучшим в классе."}]})
+   ]}
+ ]}
+];
+
+/* ---------- Плоские структуры ---------- */
+var WORDS=[], WORDS_BY_ID={}, SET_BY_ID={}, SECTION_BY_ID={};
+SECTIONS.forEach(function(sec){
+  SECTION_BY_ID[sec.id]=sec;
+  var secWordCount=0;
+  sec.sets.forEach(function(set){
+    SET_BY_ID[set.id]={set:set,section:sec};
+    set.words.forEach(function(w){
+      w.sectionId=sec.id;w.setId=set.id;
+      w.sectionTitle=sec.title;w.setTitle=set.title;
+      WORDS.push(w);WORDS_BY_ID[w.id]=w;
+      secWordCount++;
+    });
+  });
+  sec._wordCount=secWordCount;
 });
 
 /* ---------- Утилиты ---------- */
 function $(s){return document.querySelector(s)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+var QCLASS="[«»“”„‟\"'‘’‚`´‹›]";
+var QRE=new RegExp(QCLASS,'g');
 function norm(s){
   return String(s).toLowerCase().replace(/ё/g,'е')
-    .replace(/[«»“”„‟"'‘’‚`´‹›]/g,' ').replace(/[–—−]/g,'-')
+    .replace(QRE,' ').replace(/[–—−]/g,'-')
     .replace(/\s*([\/,])\s*/g,'$1').replace(/\s+/g,' ').trim();
 }
 function lev(a,b){
@@ -298,6 +746,12 @@ function pluralOshibok(n){
   if(m10===1&&m100!==11)return 'ошибка';
   if(m10>=2&&m10<=4&&(m100<10||m100>=20))return 'ошибки';
   return 'ошибок';
+}
+function pluralSlov(n){
+  var m10=n%10,m100=n%100;
+  if(m10===1&&m100!==11)return 'слово';
+  if(m10>=2&&m10<=4&&(m100<10||m100>=20))return 'слова';
+  return 'слов';
 }
 
 /* ---------- Проверка ответа ---------- */
@@ -327,9 +781,39 @@ function judge(q,text,strict){
   return {ok:ok,best:best};
 }
 function nc(ch){return ch.toLowerCase().replace('ё','е')}
+function findClozeExample(w){
+  if(!w.examples||!w.examples.length)return null;
+  var cands=acceptEn(w).slice().sort(function(a,b){return b.length-a.length});
+  var matches=[];
+  w.examples.forEach(function(ex){
+    var hay=ex.en.toLowerCase();
+    for(var c=0;c<cands.length;c++){
+      var needle=cands[c].toLowerCase();
+      if(!needle)continue;
+      var idx=hay.indexOf(needle);
+      if(idx>-1){matches.push({example:ex,start:idx,end:idx+needle.length,matched:ex.en.slice(idx,idx+needle.length)});break}
+    }
+  });
+  if(!matches.length)return null;
+  return matches[Math.floor(Math.random()*matches.length)];
+}
+function pickDistractors(correctValue,sourcePool,globalPool,sideFn,n){
+  var seen=new Set([norm(correctValue)]);
+  var out=[];
+  [sourcePool,globalPool].forEach(function(pool){
+    if(out.length>=n)return;
+    var cand=shuffle(pool.slice());
+    for(var i=0;i<cand.length&&out.length<n;i++){
+      var val=sideFn(cand[i]);
+      var key=norm(val);
+      if(val&&!seen.has(key)){seen.add(key);out.push(val)}
+    }
+  });
+  return out;
+}
 function diff(user,target){
-  var QRE=/[«»“”„‟"'‘’‚`´‹›]/g;
-  var a=Array.from(user.replace(QRE,' ').replace(/\s+/g,' ').trim()),b=Array.from(target.replace(QRE,'').replace(/\s+/g,' ').trim());
+  var a=Array.from(user.replace(QRE,' ').replace(/\s+/g,' ').trim()),
+      b=Array.from(target.replace(QRE,'').replace(/\s+/g,' ').trim());
   var n=a.length,m=b.length,i,j,dp=[];
   for(i=0;i<=n;i++){dp.push(new Array(m+1).fill(0))}
   for(i=n-1;i>=0;i--)for(j=m-1;j>=0;j--){
@@ -347,102 +831,378 @@ function diff(user,target){
 }
 
 /* ---------- Статистика (слабые слова) ---------- */
-var KEY='slovarny-diktant-stats-v1';
+var KEY='slovarny-diktant-stats-v2';
 var stats={};
 try{stats=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){stats={}}
 function saveStats(){try{localStorage.setItem(KEY,JSON.stringify(stats))}catch(e){}}
-function weakWords(){
-  return WORDS.filter(function(w){var s=stats[w.id];return s&&s.miss>0&&s.streak<2});
-}
+function isWeak(w){var s=stats[w.id];return !!(s&&s.miss>0&&s.streak<2)}
+function weakWords(){return WORDS.filter(isWeak)}
 function record(w,ok){
   var s=stats[w.id]||(stats[w.id]={miss:0,streak:0});
   if(ok){s.streak++}else{s.miss++;s.streak=0}
   saveStats();
 }
 
-/* ---------- Карточки ---------- */
-function cardHTML(w,cls,attrs){
-  return '<div class="card '+(cls||'')+'"'+(attrs||'')+'>'+
-    '<div class="en" lang="en">'+esc(w.en)+'</div>'+
-    '<div class="ipa">'+esc(w.ipa)+'</div>'+
-    '<div class="ru" lang="ru">'+esc(w.ru)+'</div></div>';
+/* ---------- Озвучка произношения ---------- */
+function speak(text){
+  try{
+    if(!('speechSynthesis' in window)||!text)return false;
+    window.speechSynthesis.cancel();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='en-US';u.rate=0.95;
+    window.speechSynthesis.speak(u);
+    return true;
+  }catch(e){return false}
 }
-function renderCards(){
-  var q=norm($('#q').value), mode=$('#mode').value;
-  var list=WORDS.filter(function(w){
-    if(!q)return true;
-    return norm(w.en).indexOf(q)>-1||norm(w.ru).indexOf(q)>-1||norm(w.ipa).indexOf(q)>-1;
+var detailsOpen=new Set();
+
+/* ---------- Выбор слов (для диктанта по разделам/наборам/словам) ---------- */
+var selection=new Set();
+function selWordIds(){return Array.from(selection)}
+function selPool(){return selWordIds().map(function(id){return WORDS_BY_ID[id]}).filter(Boolean)}
+function setIdsOf(set){return set.words.map(function(w){return w.id})}
+function sectionIdsOf(sec){
+  var ids=[];sec.sets.forEach(function(set){ids=ids.concat(setIdsOf(set))});return ids;
+}
+function groupState(ids){
+  var all=ids.every(function(id){return selection.has(id)});
+  var some=ids.some(function(id){return selection.has(id)});
+  return all?'all':(some?'some':'none');
+}
+function toggleGroup(ids){
+  var st=groupState(ids);
+  if(st==='all'){ids.forEach(function(id){selection.delete(id)})}
+  else{ids.forEach(function(id){selection.add(id)})}
+}
+function selectionSummary(){
+  if(!selection.size)return '';
+  var secSet={},setSet={},wordOnly=0;
+  selWordIds().forEach(function(id){
+    var w=WORDS_BY_ID[id];
+    var set=SET_BY_ID[w.setId].set;
+    var full=groupState(setIdsOf(set))==='all';
+    if(full) setSet[w.setId]=1; else wordOnly++;
   });
-  var grid=$('#grid');
-  grid.className='grid'+(mode==='all'?'':' study study-'+mode.slice(5));
-  grid.innerHTML=list.length?list.map(function(w){
-    return cardHTML(w,'',mode==='all'?'':' tabindex="0"');
-  }).join(''):'<p class="empty">Ничего не найдено. Попробуй другое слово.</p>';
-  $('#cardsNote').textContent=mode==='all'
-    ?'Показано слов: '+list.length+' из '+WORDS.length+'.'
-    :'Нажми на карточку, чтобы открыть скрытую сторону. Показано слов: '+list.length+'.';
+  Object.keys(setSet).forEach(function(setId){
+    var sec=SET_BY_ID[setId].section;
+    if(groupState(sectionIdsOf(sec))==='all') secSet[sec.id]=1;
+  });
+  var parts=[];
+  var secCount=Object.keys(secSet).length;
+  var setCount=Object.keys(setSet).filter(function(setId){return !secSet[SET_BY_ID[setId].section.id]}).length;
+  if(secCount) parts.push(secCount+' '+(secCount===1?'раздел':'раздела(ов)'));
+  if(setCount) parts.push(setCount+' '+(setCount===1?'набор':'набора(ов)'));
+  if(wordOnly) parts.push(wordOnly+' '+pluralSlov(wordOnly));
+  return parts.join(', ');
 }
-$('#q').addEventListener('input',renderCards);
-$('#mode').addEventListener('change',renderCards);
-$('#grid').addEventListener('click',function(e){
-  var c=e.target.closest('.card');
-  if(c&&$('#grid').classList.contains('study'))c.classList.toggle('open');
+function renderSelBar(){
+  var bar=$('#selBar');
+  if(!selection.size||document.body.dataset.tab==='test'){bar.hidden=true;return}
+  bar.hidden=false;
+  $('#selCount').textContent='Выбрано: '+selection.size+' '+pluralSlov(selection.size);
+}
+$('#selClear').addEventListener('click',function(){selection.clear();renderSelBar();renderCardsArea()});
+$('#selGo').addEventListener('click',function(){
+  testOpts.source='selected';
+  showTab('test');
+  renderDictation();
 });
-$('#grid').addEventListener('keydown',function(e){
-  if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('card')&&$('#grid').classList.contains('study')){
-    e.preventDefault();e.target.classList.toggle('open');
+
+/* ---------- Навигация по карточкам ---------- */
+var navPath = SECTIONS.length===1 ? [SECTIONS[0].id] : [];
+var searchQ='';
+
+function crumbBtn(label,path,current){
+  if(current) return '<span class="here">'+esc(label)+'</span>';
+  return '<button type="button" data-path="'+esc(JSON.stringify(path))+'">'+esc(label)+'</button>';
+}
+function renderCrumbs(){
+  var c=$('#crumbs'),html='';
+  if(searchQ){
+    c.innerHTML='<span class="here">Результаты поиска «'+esc(searchQ)+'»</span>';
+    return;
   }
+  var top=crumbBtn('Все разделы',[],navPath.length===0);
+  html=top;
+  if(navPath[0]){
+    var sec=SECTION_BY_ID[navPath[0]];
+    html+='<span class="sep">›</span>'+crumbBtn(sec.title,[sec.id],navPath.length===1);
+  }
+  if(navPath[1]){
+    var set=SET_BY_ID[navPath[1]].set;
+    html+='<span class="sep">›</span>'+crumbBtn(set.title,[navPath[0],set.id],true);
+  }
+  c.innerHTML=html;
+}
+$('#crumbs').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-path]');
+  if(!b)return;
+  navPath=JSON.parse(b.dataset.path);
+  searchQ='';$('#q').value='';
+  renderCardsArea();
+});
+
+function detailsHTML(w){
+  var html='';
+  if(w.senses&&w.senses.length){
+    html+='<div class="senses">'+w.senses.map(function(s){
+      return '<div class="sense"><span class="sru">'+esc(s.ru)+'</span>'+(s.note?('<span class="snote">'+esc(s.note)+'</span>'):'')+'</div>';
+    }).join('')+'</div>';
+  }
+  if(w.examples&&w.examples.length){
+    html+='<div class="examples">'+w.examples.map(function(ex){
+      return '<div class="example"><div class="exen" lang="en">'+esc(ex.en)+'</div><div class="exru" lang="ru">'+esc(ex.ru)+'</div></div>';
+    }).join('')+'</div>';
+  }
+  return html;
+}
+function wordCardHTML(w,opts){
+  opts=opts||{};
+  var selected=selection.has(w.id);
+  var tag=searchQ?('<div class="tag">'+esc(w.sectionTitle)+' › '+esc(w.setTitle)+'</div>'):'';
+  var hasDetails=(w.senses&&w.senses.length)||(w.examples&&w.examples.length);
+  var allowDetails=opts.full||!opts.mode||opts.mode==='all';
+  var detailsBlock='';
+  if(hasDetails&&allowDetails){
+    if(opts.full){
+      detailsBlock=detailsHTML(w);
+    } else {
+      var openNow=detailsOpen.has(w.id);
+      detailsBlock='<button type="button" class="detailsToggle" data-detoggle="'+w.id+'" aria-expanded="'+(openNow?'true':'false')+'">'+
+        (openNow?'Скрыть подробности':'Значения и примеры')+'</button>'+
+        (openNow?('<div class="detailsBody">'+detailsHTML(w)+'</div>'):'');
+    }
+  }
+  var spk='<button type="button" class="spk" data-speak="'+esc(w.en)+'" aria-label="Послушать произношение" title="Послушать">🔊</button>';
+  return '<div class="card'+(isWeak(w)?' weak':'')+'" data-wid="'+w.id+'" tabindex="0">'+
+    '<label class="gcheck" style="top:10px;right:10px" aria-label="Выбрать слово '+esc(w.en)+'">'+
+      '<input type="checkbox" data-wcheck="'+w.id+'"'+(selected?' checked':'')+'><span class="box"></span></label>'+
+    tag+
+    '<div class="enrow"><span class="en" lang="en">'+esc(w.en)+'</span>'+spk+'</div>'+
+    '<div class="ipa">'+esc(w.ipa)+'</div>'+
+    '<div class="ru" lang="ru">'+esc(w.ru)+'</div>'+
+    detailsBlock+
+  '</div>';
+}
+function groupCheckHTML(ids,label){
+  var st=groupState(ids);
+  return '<label class="gcheck" aria-label="'+esc(label)+'">'+
+    '<input type="checkbox" data-gcheck="'+esc(ids.join('|'))+'"'+(st==='all'?' checked':'')+' data-indet="'+(st==='some'?'1':'0')+'">'+
+    '<span class="box"></span></label>';
+}
+function sectionCardHTML(sec){
+  var ids=sectionIdsOf(sec);
+  return '<div class="gcard" data-navsec="'+sec.id+'" tabindex="0">'+
+    groupCheckHTML(ids,'Выбрать раздел '+sec.title)+
+    '<div class="gtitle">'+esc(sec.title)+'</div>'+
+    '<div class="gsub">'+sec.sets.length+' '+(sec.sets.length===1?'набор':'наборов')+' · '+ids.length+' '+pluralSlov(ids.length)+'</div>'+
+  '</div>';
+}
+function setCardHTML(set){
+  var ids=setIdsOf(set);
+  return '<div class="gcard" data-navset="'+set.id+'" tabindex="0">'+
+    groupCheckHTML(ids,'Выбрать набор '+set.title)+
+    '<div class="gtitle">'+esc(set.title)+'</div>'+
+    '<div class="gsub">'+ids.length+' '+pluralSlov(ids.length)+'</div>'+
+  '</div>';
+}
+
+function markIndeterminate(area){
+  var list=area.querySelectorAll('input[data-indet="1"]');
+  for(var i=0;i<list.length;i++) list[i].indeterminate=true;
+}
+function renderCardsArea(){
+  renderCrumbs();
+  var area=$('#cardsArea'), note=$('#cardsNote'), mode=$('#mode').value;
+
+  if(searchQ){
+    var q=norm(searchQ);
+    var list=WORDS.filter(function(w){
+      return norm(w.en).indexOf(q)>-1||norm(w.ru).indexOf(q)>-1||norm(w.ipa).indexOf(q)>-1;
+    });
+    area.className='grid study study-'+(mode==='all'?'none':mode.slice(5));
+    area.innerHTML=list.length?list.map(function(w){return wordCardHTML(w,{mode:mode})}).join(''):'<p class="empty">Ничего не найдено. Попробуй другое слово.</p>';
+    note.textContent='Найдено слов: '+list.length+'.';
+    return;
+  }
+
+  if(navPath.length===0){
+    area.className='ggrid';
+    area.innerHTML=SECTIONS.map(sectionCardHTML).join('');
+    markIndeterminate(area);
+    note.textContent='Выбери раздел, чтобы открыть его наборы слов.';
+    return;
+  }
+  if(navPath.length===1){
+    var sec=SECTION_BY_ID[navPath[0]];
+    area.className='ggrid';
+    area.innerHTML=sec.sets.map(setCardHTML).join('');
+    markIndeterminate(area);
+    note.textContent='Выбери набор, чтобы открыть слова и подучить их перед диктантом.';
+    return;
+  }
+  var set=SET_BY_ID[navPath[1]].set;
+  area.className='grid study study-'+(mode==='all'?'none':mode.slice(5));
+  area.innerHTML=set.words.map(function(w){return wordCardHTML(w,{mode:mode})}).join('');
+  note.textContent=mode==='all'
+    ?'Показано слов: '+set.words.length+'.'
+    :'Нажми на карточку, чтобы открыть скрытую сторону. Показано слов: '+set.words.length+'.';
+}
+if(SECTIONS.length>1||true){/* class cleanup below handles 'none' */}
+function fixModeClass(){
+  var area=$('#cardsArea');
+  area.classList.remove('study-none');
+}
+
+$('#q').addEventListener('input',function(){searchQ=this.value.trim();renderCardsArea()});
+$('#mode').addEventListener('change',renderCardsArea);
+
+$('#cardsArea').addEventListener('click',function(e){
+  var spk=e.target.closest('[data-speak]');
+  if(spk){speak(spk.dataset.speak);return}
+  var det=e.target.closest('[data-detoggle]');
+  if(det){
+    var wid=parseInt(det.dataset.detoggle,10);
+    if(detailsOpen.has(wid))detailsOpen.delete(wid);else detailsOpen.add(wid);
+    renderCardsArea();
+    return;
+  }
+  var wcheck=e.target.closest('[data-wcheck]');
+  if(wcheck){
+    var id=parseInt(wcheck.dataset.wcheck,10);
+    if(wcheck.checked)selection.add(id);else selection.delete(id);
+    renderSelBar();renderCardsArea();
+    return;
+  }
+  var gcheck=e.target.closest('[data-gcheck]');
+  if(gcheck){
+    var ids=gcheck.dataset.gcheck.split('|').map(Number);
+    toggleGroup(ids);
+    renderSelBar();renderCardsArea();
+    return;
+  }
+  var navsec=e.target.closest('[data-navsec]');
+  if(navsec){navPath=[navsec.dataset.navsec];renderCardsArea();return}
+  var navset=e.target.closest('[data-navset]');
+  if(navset){navPath=[navPath[0],navset.dataset.navset];renderCardsArea();return}
+  var card=e.target.closest('.card');
+  if(card && $('#cardsArea').classList.contains('study')){card.classList.toggle('open')}
+});
+$('#cardsArea').addEventListener('keydown',function(e){
+  if(e.key!=='Enter'&&e.key!==' ')return;
+  var card=e.target.closest('.card');
+  if(card && e.target===card && $('#cardsArea').classList.contains('study')){e.preventDefault();card.classList.toggle('open');return}
+  var g=e.target.closest('.gcard');
+  if(g && e.target===g){e.preventDefault();g.click();}
 });
 
 /* ---------- Диктант ---------- */
 var root=$('#dictation');
-var opts={count:'10',dir:'mixed',strict:false};
+var testOpts={source:'all',count:'10',dir:'mixed',strict:false,exercise:'dictation'};
 var S=null;
 
+function poolForSource(src){
+  if(src==='weak')return weakWords();
+  if(src==='selected')return selPool();
+  return WORDS;
+}
+function poolForExercise(){
+  var pool=poolForSource(testOpts.source);
+  if(testOpts.exercise==='cloze')pool=pool.filter(function(w){return !!findClozeExample(w)});
+  if(testOpts.exercise==='sentence')pool=pool.filter(function(w){return w.examples&&w.examples.length});
+  return pool;
+}
+function sourceLabel(src,n){
+  if(src==='weak')return 'Слабые слова ('+n+')';
+  if(src==='selected')return 'Выбранное ('+n+')';
+  return 'Все слова ('+n+')';
+}
 function chip(name,val,label,disabled){
   return '<label class="chip"><input type="radio" name="'+name+'" value="'+val+'"'+
-    (String(opts[name])===val?' checked':'')+(disabled?' disabled':'')+'><span>'+esc(label)+'</span></label>';
+    (String(testOpts[name])===val?' checked':'')+(disabled?' disabled':'')+'><span>'+esc(label)+'</span></label>';
 }
-function renderSetup(){
+function srcChip(val,label,n,disabled){
+  return '<label class="chip srcchip"><input type="radio" name="source" value="'+val+'"'+
+    (testOpts.source===val?' checked':'')+(disabled?' disabled':'')+
+    '><span>'+esc(label)+'<small>'+n+' '+pluralSlov(n)+'</small></span></label>';
+}
+function renderDictation(){
+  document.body.dataset.tab='test';renderSelBar();
   S=null;
-  var weak=weakWords();
-  if(opts.count==='weak'&&!weak.length)opts.count='10';
-  var hasStats=Object.keys(stats).length>0;
+  var weak=weakWords(), weakN=weak.length, selN=selection.size;
+  if(testOpts.source==='weak'&&!weakN)testOpts.source='all';
+  if(testOpts.source==='selected'&&!selN)testOpts.source='all';
+
+  var pool=poolForExercise();
+  var countOpts=[10,20].filter(function(n){return n<pool.length});
+  var avail=countOpts.map(String).concat(['all']);
+  if(avail.indexOf(testOpts.count)===-1)testOpts.count='all';
+
+  var selInfo=selN?('<p class="note">Выбрано сейчас: '+selectionSummary()+'. <button class="link" id="goCards" type="button" style="padding:0">Изменить выбор</button></p>'):'';
+
+  var exNote={
+    dictation:'Ошибкой считается каждое слово, которое переведено неверно или с опечаткой. В конце покажу процент верных ответов. Регистр букв, «ё» вместо «е» и вид кавычек не считаются ошибкой.',
+    choice:'Ошибкой считается каждый неверно выбранный вариант перевода. В конце покажу процент верных ответов.',
+    cloze:'Нужно вписать по-английски слово, пропущенное в примере предложения. Опечатки считаются ошибкой, как в диктанте.',
+    sentence:'Показываю русское предложение — пишешь его по-английски целиком. Регистр, знаки препинания и вид кавычек не важны; при расхождении покажу, где именно. Верным считается совпадение с примером из карточки.'
+  }[testOpts.exercise];
+
   root.innerHTML=
     '<div class="panel">'+
     '<h2>Новый диктант</h2>'+
+    '<div class="srcbox"><fieldset style="margin:0"><legend>Какие слова повторяем</legend>'+
+      srcChip('all','Все слова',WORDS.length)+
+      srcChip('weak','Слабые слова',weakN,!weakN)+
+      srcChip('selected','Выбранное',selN,!selN)+
+    '</fieldset>'+selInfo+'</div>'+
+    '<fieldset><legend>Тип упражнения</legend>'+
+      chip('exercise','dictation','Диктант (впиши перевод)')+
+      chip('exercise','choice','Выбор перевода из 4 вариантов')+
+      chip('exercise','cloze','Пропуск в предложении (cloze)')+
+      chip('exercise','sentence','Перевод предложения')+
+    '</fieldset>'+
     '<fieldset><legend>Сколько слов</legend>'+
-      chip('count','10','10')+chip('count','20','20')+chip('count','all','Все '+WORDS.length)+
-      chip('count','weak','Слабые ('+weak.length+')',!weak.length)+
+      countOpts.map(function(n){return chip('count',String(n),String(n))}).join('')+
+      chip('count','all','Все ('+pool.length+')')+
     '</fieldset>'+
-    '<fieldset><legend>Что переводить</legend>'+
+    ((testOpts.exercise==='cloze'||testOpts.exercise==='sentence')?'':(
+      '<fieldset><legend>Что переводить</legend>'+
       chip('dir','mixed','Вперемешку')+chip('dir','ru2en','Русский → английский')+chip('dir','en2ru','Английский → русский')+
-    '</fieldset>'+
-    '<label class="check"><input type="checkbox" id="strict"'+(opts.strict?' checked':'')+'><span>Строго: русский перевод писать целиком, со всеми вариантами через запятую или косую черту</span></label>'+
-    '<p class="note">Ошибкой считается каждое слово, которое переведено неверно или с опечаткой. 0–1 ошибка: оценка 5. 2 ошибки: 4. 3 ошибки: 3. 4 и больше: 2. Регистр букв и «ё» вместо «е» не считаются ошибкой.</p>'+
-    '<div class="row"><button class="btn primary" id="start">Начать диктант</button></div>'+
+      '</fieldset>'
+    ))+
+    (testOpts.exercise==='dictation'?
+      '<label class="check"><input type="checkbox" id="strict"'+(testOpts.strict?' checked':'')+'><span>Строго: русский перевод писать целиком, со всеми вариантами через запятую или косую черту</span></label>'
+      :'')+
+    '<p class="note">'+exNote+'</p>'+
+    (pool.length?'<div class="row"><button class="btn primary" id="start">Начать диктант</button></div>'
+      :'<p class="note">В этой группе пока нет подходящих слов для этого режима.</p>')+
     '</div>'+
-    (hasStats?'<p><button class="link" id="resetStats">Сбросить статистику слабых слов</button></p>':'');
+    (Object.keys(stats).length?'<p><button class="link" id="resetStats">Сбросить статистику слабых слов</button></p>':'');
 }
-function startSession(list){
-  var pool=shuffle(list.slice());
-  var n=(opts.count==='all'||opts.count==='weak')?pool.length:Math.min(parseInt(opts.count,10),pool.length);
+function startSession(){
+  var pool=poolForExercise();
+  var list=shuffle(pool.slice());
+  var n=testOpts.count==='all'?list.length:Math.min(parseInt(testOpts.count,10),list.length);
   S={
-    queue:pool.slice(0,n).map(function(w){
-      return {w:w,dir:opts.dir==='mixed'?(Math.random()<0.5?'ru2en':'en2ru'):opts.dir};
+    queue:list.slice(0,n).map(function(w){
+      return {w:w,dir:testOpts.dir==='mixed'?(Math.random()<0.5?'ru2en':'en2ru'):testOpts.dir};
     }),
-    i:0,errors:0,results:[],last:null,strict:opts.strict
+    i:0,errors:0,results:[],last:null,strict:testOpts.strict
   };
   renderQuestion();
 }
 function progressHTML(upto){
   var total=S.queue.length;
   return '<div class="prog"><span>Слово '+(S.i+1)+' из '+total+'</span>'+
-    '<span>Ошибок: '+S.errors+'. Оценка сейчас: '+gradeFor(S.errors)+'</span></div>'+
+    '<span>Ошибок: '+S.errors+'</span></div>'+
     '<div class="bar"><i style="width:'+Math.round(upto/total*100)+'%"></i></div>';
 }
 function renderQuestion(){
-  var q=S.queue[S.i], toEn=q.dir==='ru2en';
+  var q=S.queue[S.i];
+  if(testOpts.exercise==='choice'){renderChoiceQuestion(q);return}
+  if(testOpts.exercise==='cloze'){renderClozeQuestion(q);return}
+  if(testOpts.exercise==='sentence'){renderSentenceQuestion(q);return}
+  var toEn=q.dir==='ru2en';
   root.innerHTML=
     progressHTML(S.i)+
     '<div class="panel">'+
@@ -458,41 +1218,118 @@ function renderQuestion(){
     '<p><button class="link" id="quit">Закончить диктант</button></p>';
   $('#ans').focus();
 }
-function answer(text,gaveUp){
+function renderChoiceQuestion(q){
+  var toEn=q.dir==='ru2en';
+  var correct=toEn?q.w.en:q.w.ru;
+  var sideFn=function(w){return toEn?w.en:w.ru};
+  var sourcePool=poolForExercise();
+  var distractors=pickDistractors(correct,sourcePool,WORDS,sideFn,3);
+  var options=shuffle([correct].concat(distractors));
+  S._correctChoiceText=correct;
+  root.innerHTML=
+    progressHTML(S.i)+
+    '<div class="panel">'+
+      '<p class="dirlabel">'+(toEn?'Выбери перевод на английский':'Выбери перевод на русский')+'</p>'+
+      '<p class="prompt" lang="'+(toEn?'ru':'en')+'">'+esc(toEn?q.w.ru:q.w.en)+'</p>'+
+      '<div class="choices">'+
+        options.map(function(opt){
+          return '<button type="button" class="choiceBtn" data-choice="'+esc(opt)+'" data-correct="'+(opt===correct?'1':'0')+'">'+esc(opt)+'</button>';
+        }).join('')+
+      '</div>'+
+      '<div class="row"><button class="btn" type="button" id="idk">Не знаю</button></div>'+
+    '</div>'+
+    '<p><button class="link" id="quit">Закончить диктант</button></p>';
+}
+function renderClozeQuestion(q){
+  var cz=findClozeExample(q.w);
+  if(!cz){ // защитный случай, если слово как-то оказалось без подходящего примера
+    S._cz=null;
+    recordAnswer(false,'',q.w.en);
+    return;
+  }
+  var sentence=cz.example.en;
+  var masked=esc(sentence.slice(0,cz.start))+'<span class="blank"></span>'+esc(sentence.slice(cz.end));
+  S._cz=cz;
+  root.innerHTML=
+    progressHTML(S.i)+
+    '<div class="panel">'+
+      '<p class="dirlabel">Впиши пропущенное английское слово или фразу</p>'+
+      '<p class="prompt cloze" lang="en">'+masked+'</p>'+
+      '<p class="clozeru" lang="ru">'+esc(cz.example.ru)+'</p>'+
+      '<form id="af" autocomplete="off">'+
+        '<label class="sr" for="ans">Пропущенное слово</label>'+
+        '<input id="ans" class="answer" lang="en" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="done" autocomplete="off">'+
+        '<div class="row"><button class="btn primary" type="submit">Проверить</button>'+
+        '<button class="btn" type="button" id="idk">Не знаю</button></div>'+
+      '</form>'+
+    '</div>'+
+    '<p><button class="link" id="quit">Закончить диктант</button></p>';
+  $('#ans').focus();
+}
+function sentNorm(s){
+  return norm(s).replace(/[.,;:!?()—\-]/g,' ').replace(/\s+/g,' ').trim();
+}
+function renderSentenceQuestion(q){
+  var exs=q.w.examples, ex=exs[Math.floor(Math.random()*exs.length)];
+  S._sent=ex;
+  root.innerHTML=
+    progressHTML(S.i)+
+    '<div class="panel">'+
+      '<p class="dirlabel">Переведи предложение на английский (слово: <b lang="en">'+esc(q.w.en)+'</b>)</p>'+
+      '<p class="prompt cloze" lang="ru">'+esc(ex.ru)+'</p>'+
+      '<form id="af" autocomplete="off">'+
+        '<label class="sr" for="ans">Перевод предложения</label>'+
+        '<input id="ans" class="answer" lang="en" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="done" autocomplete="off">'+
+        '<div class="row"><button class="btn primary" type="submit">Проверить</button>'+
+        '<button class="btn" type="button" id="idk">Не знаю</button></div>'+
+      '</form>'+
+    '</div>'+
+    '<p><button class="link" id="quit">Закончить диктант</button></p>';
+  $('#ans').focus();
+}
+function recordAnswer(ok,userText,bestText){
   var q=S.queue[S.i];
-  var res=gaveUp?{ok:false,best:null}:judge(q,text,S.strict);
-  if(!res.ok)S.errors++;
-  record(q.w,res.ok);
-  var item={q:q,ok:res.ok,text:gaveUp?'':text.trim(),best:res.best};
+  if(!ok)S.errors++;
+  record(q.w,ok);
+  var item={q:q,ok:ok,text:userText||'',best:bestText};
   S.results.push(item);
   S.last=item;
   renderResult();
+}
+function answer(text,gaveUp){
+  var q=S.queue[S.i];
+  var res=gaveUp?{ok:false,best:null}:judge(q,text,S.strict);
+  recordAnswer(res.ok,gaveUp?'':text.trim(),res.best);
 }
 function renderResult(){
   var r=S.last, last=S.i===S.queue.length-1;
   var cmp='';
   if(!r.ok&&r.text){
-    var d=diff(r.text,r.best);
-    cmp='<div class="cmp"><div><b>Ты написал:</b> '+d.ah+'</div><div><b>Правильно:</b> '+d.bh+'</div></div>';
+    if(testOpts.exercise==='choice'){
+      cmp='<div class="cmp"><div><b>Ты выбрал:</b> '+esc(r.text)+'</div><div><b>Правильно:</b> '+esc(r.best||'')+'</div></div>';
+    } else {
+      var d=diff(r.text,r.best||'');
+      cmp='<div class="cmp"><div><b>Ты написал:</b> '+d.ah+'</div><div><b>Правильно:</b> '+d.bh+'</div></div>';
+    }
   }
   root.innerHTML=
     progressHTML(S.i+1)+
     '<div class="panel">'+
       '<div class="verdict '+(r.ok?'ok':'bad')+'">'+(r.ok?'✓ Верно':(r.text?'✕ Ошибка':'✕ Не знаю'))+'</div>'+
-      cardHTML(r.q.w)+cmp+
+      wordCardHTML(r.q.w,{full:true})+cmp+
       '<div class="row"><button class="btn primary" id="next">'+(last?'Показать оценку':'Дальше')+'</button></div>'+
     '</div>'+
     '<p><button class="link" id="quit">Закончить диктант</button></p>';
   $('#next').focus();
 }
 function renderFinal(){
-  var g=gradeFor(S.errors), total=S.queue.length;
-  var words={5:'Отлично',4:'Хорошо',3:'Удовлетворительно',2:'Нужно повторить'};
+  var total=S.queue.length, pct=Math.round((total-S.errors)/total*100);
+  var verdictWord=pct>=90?'Отлично':pct>=70?'Хорошо':pct>=50?'Неплохо':'Нужно повторить';
   var wrong=S.results.filter(function(r){return !r.ok});
   var html='<div class="panel final">'+
-    '<p class="gradeword">'+words[g]+'</p>'+
-    '<div class="grade" aria-label="Оценка '+g+'">'+g+'</div>'+
-    '<p>'+S.errors+' '+pluralOshibok(S.errors)+' из '+total+' слов</p>'+
+    '<p class="gradeword">'+verdictWord+'</p>'+
+    '<div class="grade" style="font-size:clamp(4rem,20vw,6.5rem)" aria-label="Верно '+pct+' процентов">'+pct+'%</div>'+
+    '<p>Верно '+(total-S.errors)+' из '+total+' · '+S.errors+' '+pluralOshibok(S.errors)+'</p>'+
     '<div class="row" style="justify-content:center">'+
       (wrong.length?'<button class="btn primary" id="retry">Повторить ошибки</button>':'')+
       '<button class="btn'+(wrong.length?'':' primary')+'" id="again">Новый диктант</button>'+
@@ -502,7 +1339,7 @@ function renderFinal(){
       wrong.map(function(r){
         return '<div class="miss-item">'+
           (r.text?'<p class="said">Ты написал: '+esc(r.text)+'</p>':'<p class="said">Не знал</p>')+
-          cardHTML(r.q.w)+'</div>';
+          wordCardHTML(r.q.w,{full:true})+'</div>';
       }).join('')+'</div>';
   }
   root.innerHTML=html;
@@ -512,159 +1349,63 @@ function renderFinal(){
 
 root.addEventListener('change',function(e){
   var t=e.target;
-  if(t.name==='count'||t.name==='dir')opts[t.name]=t.value;
-  if(t.id==='strict')opts.strict=t.checked;
+  if(t.name==='source'){testOpts.source=t.value;testOpts.count='10';renderDictation();return}
+  if(t.name==='exercise'){testOpts.exercise=t.value;testOpts.count='10';renderDictation();return}
+  if(t.name==='count'||t.name==='dir')testOpts[t.name]=t.value;
+  if(t.id==='strict')testOpts.strict=t.checked;
 });
 root.addEventListener('submit',function(e){
   e.preventDefault();
   if(!S||e.target.id!=='af')return;
   var v=$('#ans').value;
   if(!v.trim()){$('#ans').focus();return}
-  answer(v,false);
+  if(testOpts.exercise==='cloze'){
+    var res=judge({w:S.queue[S.i].w,dir:'ru2en'},v,false);
+    recordAnswer(res.ok,v.trim(),res.best);
+  } else if(testOpts.exercise==='sentence'){
+    recordAnswer(sentNorm(v)===sentNorm(S._sent.en),v.trim(),S._sent.en);
+  } else {
+    answer(v,false);
+  }
 });
 root.addEventListener('click',function(e){
+  var spk=e.target.closest('[data-speak]');
+  if(spk){speak(spk.dataset.speak);return}
+  var choiceBtn=e.target.closest('[data-choice]');
+  if(choiceBtn){
+    recordAnswer(choiceBtn.dataset.correct==='1',choiceBtn.dataset.choice,S._correctChoiceText);
+    return;
+  }
   var id=e.target.id;
-  if(id==='start'){startSession(opts.count==='weak'?weakWords():WORDS)}
-  else if(id==='idk'){answer('',true)}
+  if(id==='start'){startSession()}
+  else if(id==='idk'){
+    if(testOpts.exercise==='choice'){recordAnswer(false,'',S._correctChoiceText)}
+    else if(testOpts.exercise==='cloze'){recordAnswer(false,'',(S._cz&&S._cz.matched)||S.queue[S.i].w.en)}
+    else if(testOpts.exercise==='sentence'){recordAnswer(false,'',S._sent.en)}
+    else{answer('',true)}
+  }
   else if(id==='next'){S.i++;if(S.i>=S.queue.length)renderFinal();else renderQuestion()}
-  else if(id==='quit'||id==='again'){renderSetup()}
+  else if(id==='quit'||id==='again'){renderDictation()}
   else if(id==='retry'){
-    var list=S.results.filter(function(r){return !r.ok}).map(function(r){return r.q.w});
-    var keep=opts.count;opts.count='all';startSession(list);opts.count=keep;
+    var wrongWords=S.results.filter(function(r){return !r.ok}).map(function(r){return r.q.w.id});
+    selection=new Set(wrongWords);
+    testOpts.source='selected';testOpts.count='all';
+    renderDictation();
   }
-  else if(id==='resetStats'){stats={};saveStats();renderSetup()}
-});
-
-/* ---------- Шпаргалка (картинка) ---------- */
-var sheetCanvas=null, sheetCols=2, sheetBusy=false, dl=null;
-
-function wrapText(ctx,text,maxW){
-  var words=text.split(' '),lines=[],line='';
-  words.forEach(function(w){
-    var t=line?line+' '+w:w;
-    if(ctx.measureText(t).width>maxW&&line){lines.push(line);line=w}else line=t;
-  });
-  if(line)lines.push(line);
-  return lines;
-}
-async function buildSheet(){
-  if(sheetBusy)return; sheetBusy=true;
-  var note=$('#dlNote'); note.textContent='Рисую шпаргалку…';
-  try{
-    if(document.fonts&&document.fonts.load){
-      await Promise.all([
-        document.fonts.load('700 34px "Golos Text"','Аaбb'),
-        document.fonts.load('400 29px "Golos Text"','Аaбb'),
-        document.fonts.load('28px "Gentium Plus"','ˈɪəʊː'),
-        document.fonts.load('80px "Marck Script"','Шпаргалка')
-      ]).catch(function(){});
-    }
-    var cols=sheetCols, W=cols===2?1500:2100, pad=76, gap=60;
-    var colW=(W-pad*2-gap*(cols-1))/cols;
-    var FEN='700 34px "Golos Text",system-ui,sans-serif';
-    var FIPA='28px "Gentium Plus","Noto Serif","DejaVu Serif",serif';
-    var FRU='400 29px "Golos Text",system-ui,sans-serif';
-    var LH={en:44,ipa:38,ru:39}, PT=14, PB=18;
-    var probe=document.createElement('canvas').getContext('2d');
-
-    var items=WORDS.map(function(w){
-      probe.font=FEN; var enLines=wrapText(probe,w.en,colW);
-      var lastEnW=probe.measureText(enLines[enLines.length-1]).width;
-      probe.font=FIPA; var ipaW=probe.measureText(w.ipa).width;
-      var ops=[],y=PT;
-      enLines.forEach(function(l,i){ops.push({t:l,f:FEN,c:'#1F2F8F',x:0,y:y+LH.en*0.78});y+=LH.en});
-      var inline=ipaW+18+lastEnW<=colW;
-      var ipaLines;
-      if(inline){
-        ops.push({t:w.ipa,f:FIPA,c:'#6F7686',x:lastEnW+18,y:y-LH.en*0.22});
-      }else{
-        ipaLines=wrapText(probe,w.ipa,colW);
-        ipaLines.forEach(function(l){ops.push({t:l,f:FIPA,c:'#6F7686',x:0,y:y+LH.ipa*0.72});y+=LH.ipa});
-      }
-      probe.font=FRU; var ruLines=wrapText(probe,w.ru,colW);
-      ruLines.forEach(function(l){ops.push({t:l,f:FRU,c:'#1A1E2B',x:0,y:y+LH.ru*0.74});y+=LH.ru});
-      return {ops:ops,h:y+PB};
-    });
-
-    var total=items.reduce(function(s,i){return s+i.h},0), target=total/cols;
-    var columns=[],cur=[],curH=0;
-    items.forEach(function(it){
-      if(curH+it.h/2>target&&columns.length<cols-1&&cur.length){columns.push(cur);cur=[];curH=0}
-      cur.push(it);curH+=it.h;
-    });
-    columns.push(cur);
-    var colHs=columns.map(function(c){return c.reduce(function(s,i){return s+i.h},0)});
-    var headerH=250, H=headerH+Math.max.apply(null,colHs)+70;
-
-    var c=document.createElement('canvas'); c.width=W; c.height=H;
-    var ctx=c.getContext('2d');
-    ctx.fillStyle='#FBFDFF'; ctx.fillRect(0,0,W,H);
-    ctx.strokeStyle='#E1EAF7'; ctx.lineWidth=1;
-    ctx.beginPath();
-    for(var x=0;x<=W;x+=30){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H)}
-    for(var yy=0;yy<=H;yy+=30){ctx.moveTo(0,yy+.5);ctx.lineTo(W,yy+.5)}
-    ctx.stroke();
-    ctx.strokeStyle='#E2574A'; ctx.lineWidth=3;
-    ctx.beginPath(); ctx.moveTo(46,0); ctx.lineTo(46,H); ctx.stroke();
-
-    ctx.textBaseline='alphabetic';
-    ctx.fillStyle='#22308F'; ctx.font='96px "Marck Script","Segoe Script",cursive';
-    ctx.fillText('Шпаргалка',pad,pad+92);
-    ctx.fillStyle='#6F7686'; ctx.font='400 30px "Golos Text",system-ui,sans-serif';
-    ctx.fillText('Словарный диктант: '+WORDS.length+' слов, английский и русский',pad,pad+150);
-    ctx.strokeStyle='#B9C8E4'; ctx.lineWidth=2;
-    ctx.beginPath(); ctx.moveTo(pad,headerH-6); ctx.lineTo(W-pad,headerH-6); ctx.stroke();
-
-    columns.forEach(function(col,ci){
-      var cx=pad+ci*(colW+gap), y0=headerH;
-      if(ci>0){
-        ctx.strokeStyle='#B9C8E4'; ctx.lineWidth=1.5;
-        var sx=cx-gap/2; ctx.beginPath(); ctx.moveTo(sx,headerH+6); ctx.lineTo(sx,H-50); ctx.stroke();
-      }
-      col.forEach(function(it){
-        it.ops.forEach(function(o){ctx.font=o.f;ctx.fillStyle=o.c;ctx.fillText(o.t,cx+o.x,y0+o.y)});
-        y0+=it.h;
-        ctx.strokeStyle='#C9D6EC'; ctx.lineWidth=1.5;
-        ctx.beginPath(); ctx.moveTo(cx,y0-6); ctx.lineTo(cx+colW,y0-6); ctx.stroke();
-      });
-    });
-
-    sheetCanvas=c;
-    var img=$('#sheetImg'); img.src=c.toDataURL('image/png'); img.hidden=false;
-    note.textContent=dl?'Готово. Кнопка сохранит картинку, а на телефоне её можно открыть и увеличить пальцами.':
-      'Готово. Нажми на картинку и удержи, чтобы сохранить её. На компьютере: правая кнопка мыши, «Сохранить картинку как».';
-  }catch(err){
-    note.textContent='Не получилось нарисовать шпаргалку. Обнови страницу и попробуй ещё раз.';
-  }
-  sheetBusy=false;
-}
-function saveSheet(){
-  if(!sheetCanvas||!dl)return;
-  sheetCanvas.toBlob(function(blob){
-    if(!blob)return;
-    dl.save({filename:'shpargalka-slovarny-diktant.png',data:blob}).then(function(){
-      $('#dlNote').textContent='Шпаргалка сохранена.';
-    }).catch(function(e){
-      var code=e&&e.code;
-      $('#dlNote').textContent=code==='declined'
-        ?'Сохранение отменено. Можно нажать на картинку и удержать, чтобы сохранить её вручную.'
-        :'Кнопка не сработала. Нажми на картинку и удержи, чтобы сохранить её вручную.';
-    });
-  },'image/png');
-}
-$('#dlBtn').addEventListener('click',saveSheet);
-document.querySelectorAll('input[name="cols"]').forEach(function(r){
-  r.addEventListener('change',function(){sheetCols=parseInt(r.value,10);buildSheet()});
+  else if(id==='resetStats'){stats={};saveStats();renderDictation()}
+  else if(id==='goCards'){showTab('cards')}
 });
 
 /* ---------- Вкладки ---------- */
-var sheetBuilt=false;
 function showTab(name){
-  ['cards','test','sheet'].forEach(function(n){
-    $('#tab-'+n).hidden=(n!==name);
+  document.body.dataset.tab=name;
+  $('#tab-cards').hidden=(name!=='cards');
+  $('#tab-test').hidden=(name!=='test');
+  ['cards','test'].forEach(function(n){
     var t=$('#t-'+n); t.setAttribute('aria-selected',n===name?'true':'false'); t.classList.toggle('on',n===name);
   });
-  if(name==='sheet'&&!sheetBuilt){sheetBuilt=true;buildSheet()}
+  if(name==='test' && !S) renderDictation();
+  renderSelBar();
   window.scrollTo(0,0);
 }
 document.querySelectorAll('.tab').forEach(function(b){
@@ -672,28 +1413,11 @@ document.querySelectorAll('.tab').forEach(function(b){
 });
 
 /* ---------- Запуск ---------- */
-$('#subline').textContent=WORDS.length+' слов по программированию';
-renderCards();
-renderSetup();
-
-(async function(){
-  try{
-    if(window.claude&&typeof window.claude.use==='function'){
-      dl=await window.claude.use('downloads');
-    }
-  }catch(e){dl=null}
-  if(!window.claude){
-    /* обычный сайт (GitHub Pages): скачивание через ссылку */
-    dl={save:function(o){return new Promise(function(res){
-      var url=URL.createObjectURL(o.data),a=document.createElement('a');
-      a.href=url;a.download=o.filename;document.body.appendChild(a);a.click();a.remove();
-      setTimeout(function(){URL.revokeObjectURL(url)},1500);res({status:'saved'});
-    })}};
-  }
-  $('#dlBtn').hidden=!dl;
-  var n=$('#dlNote');
-  if(!dl&&sheetCanvas){n.textContent='Нажми на картинку и удержи, чтобы сохранить её. На компьютере: правая кнопка мыши, «Сохранить картинку как».'}
-})();
+$('#subline').textContent=WORDS.length+' слов: IT-термины и общий английский';
+document.body.dataset.tab='cards';
+renderCardsArea();
+renderDictation();
+showTab('cards');
 
 })();
 </script>

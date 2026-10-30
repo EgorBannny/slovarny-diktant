@@ -284,6 +284,179 @@ function W(en,ipa,ru,extra){
   return w;
 }
 var SECTIONS=[
+{id:'basics',title:'Основы английского',sets:[
+   {id:'pronouns',title:'Местоимения',words:[
+     W('I','[aɪ]','я',{examples:[
+       {en:"I am a student at this college.",ru:"Я студент этого колледжа."},
+       {en:"I study English every day.",ru:"Я учу английский каждый день."}
+     ]}),
+     W('you','[juː]','ты; вы',{senses:[
+       {ru:'ты (ед. ч.)',note:'для одного человека'},
+       {ru:'вы (мн. ч. или вежливо)',note:'для нескольких людей или вежливого обращения'}
+     ],examples:[
+       {en:"You are my best friend.",ru:"Ты мой лучший друг."},
+       {en:"Can you help me, please?",ru:"Вы можете мне помочь, пожалуйста?"}
+     ]}),
+     W('he','[hiː]','он',{examples:[
+       {en:"He works in the IT department.",ru:"Он работает в IT-отделе."},
+       {en:"He is my brother.",ru:"Он мой брат."}
+     ]}),
+     W('she','[ʃiː]','она',{examples:[
+       {en:"She speaks three languages.",ru:"Она говорит на трёх языках."},
+       {en:"She is a programmer.",ru:"Она программист."}
+     ]}),
+     W('it','[ɪt]','он, она, оно (о неодушевлённых предметах и животных)',{senses:[
+       {ru:'это (в безличных предложениях)',note:"It is cold today. — Сегодня холодно."}
+     ],examples:[
+       {en:"It is a very fast computer.",ru:"Это очень быстрый компьютер."},
+       {en:"It is raining outside.",ru:"На улице идёт дождь."}
+     ]}),
+     W('we','[wiː]','мы',{examples:[
+       {en:"We are learning English grammar.",ru:"Мы учим английскую грамматику."},
+       {en:"We live in the same city.",ru:"Мы живём в одном городе."}
+     ]}),
+     W('they','[ðeɪ]','они',{examples:[
+       {en:"They work in a big office.",ru:"Они работают в большом офисе."},
+       {en:"They are my friends.",ru:"Они мои друзья."}
+     ]}),
+     W('me','[miː]','меня, мне, мной',{examples:[
+       {en:"Please give me the book.",ru:"Пожалуйста, дай мне книгу."},
+       {en:"She called me yesterday.",ru:"Она позвонила мне вчера."}
+     ]}),
+     W('him','[hɪm]','его, ему, им',{examples:[
+       {en:"I saw him at the lecture.",ru:"Я видел его на лекции."},
+       {en:"Give him the file, please.",ru:"Дай ему файл, пожалуйста."}
+     ]}),
+     W('her','[hɜː]','её, ей',{senses:[
+       {ru:'её (притяжательное)',note:"her book — её книга"}
+     ],examples:[
+       {en:"I know her very well.",ru:"Я знаю её очень хорошо."},
+       {en:"Please help her with the task.",ru:"Пожалуйста, помоги ей с задачей."}
+     ]}),
+     W('us','[ʌs]','нас, нам, нами',{examples:[
+       {en:"Can you help us?",ru:"Ты можешь нам помочь?"},
+       {en:"The teacher explained the rule to us.",ru:"Учитель объяснил нам правило."}
+     ]}),
+     W('them','[ðem]','их, им',{examples:[
+       {en:"I saw them in the library.",ru:"Я видел их в библиотеке."},
+       {en:"Please give them these documents.",ru:"Пожалуйста, дай им эти документы."}
+     ]}),
+     W('my','[maɪ]','мой',{examples:[
+       {en:"This is my computer.",ru:"Это мой компьютер."},
+       {en:"My name is Anna.",ru:"Меня зовут Анна."}
+     ]}),
+     W('your','[jɔː]','твой; ваш',{examples:[
+       {en:"Is this your pen?",ru:"Это твоя ручка?"},
+       {en:"Your project is very good.",ru:"Твой проект очень хороший."}
+     ]}),
+     W('his','[hɪz]','его (притяжательное)',{examples:[
+       {en:"His laptop is very fast.",ru:"Его ноутбук очень быстрый."},
+       {en:"I like his idea.",ru:"Мне нравится его идея."}
+     ]}),
+     W('its','[ɪts]','его, её (о неодушевлённых предметах)',{note:'Не путай с it\'s = it is.',examples:[
+       {en:"The company changed its name.",ru:"Компания изменила своё название."},
+       {en:"The computer updated its software.",ru:"Компьютер обновил своё программное обеспечение."}
+     ]}),
+     W('our','[ˈaʊə]','наш',{examples:[
+       {en:"Our group has ten students.",ru:"В нашей группе десять студентов."},
+       {en:"This is our classroom.",ru:"Это наш класс."}
+     ]}),
+     W('their','[ðeə]','их (притяжательное)',{examples:[
+       {en:"Their teacher is very strict.",ru:"Их учитель очень строгий."},
+       {en:"The students do their homework every day.",ru:"Студенты делают свою домашнюю работу каждый день."}
+     ]}),
+     W('mine','[maɪn]','мой (без существительного)',{examples:[
+       {en:"This book is mine.",ru:"Эта книга моя."},
+       {en:"That laptop is mine, not yours.",ru:"Тот ноутбук мой, а не твой."}
+     ]}),
+     W('yours','[jɔːz]','твой; ваш (без существительного)',{examples:[
+       {en:"Is this pen yours?",ru:"Эта ручка твоя?"},
+       {en:"My answer is different from yours.",ru:"Мой ответ отличается от твоего."}
+     ]}),
+     W('his','[hɪz]','его (без существительного)',{senses:[
+       {ru:'его (притяжательное, перед существительным)',note:"his book — его книга"}
+     ],examples:[
+       {en:"This car is his.",ru:"Эта машина его."},
+       {en:"His is the best answer.",ru:"Его ответ — лучший."}
+     ]}),
+     W('hers','[hɜːz]','её (без существительного)',{examples:[
+       {en:"The red bag is hers.",ru:"Красная сумка — её."},
+       {en:"My idea is better than hers.",ru:"Моя идея лучше, чем её."}
+     ]}),
+     W('ours','[ˈaʊəz]','наш (без существительного)',{examples:[
+       {en:"This room is ours.",ru:"Эта комната наша."},
+       {en:"Their project is older than ours.",ru:"Их проект старше нашего."}
+     ]}),
+     W('theirs','[ðeəz]','их (без существительного)',{examples:[
+       {en:"The big house is theirs.",ru:"Большой дом — их."},
+       {en:"Their car is faster than theirs.",ru:"Их машина быстрее, чем их."}
+     ]})
+   ]},
+   {id:'questions',title:'Вопросительные слова',words:[
+     W('what','[wɒt]','что; какой',{senses:[
+       {ru:'какой (перед существительным)',note:"What colour is it? — Какого это цвета?"}
+     ],examples:[
+       {en:"What is your name?",ru:"Как тебя зовут?"},
+       {en:"What are you doing?",ru:"Что ты делаешь?"}
+     ]}),
+     W('who','[huː]','кто (для людей)',{examples:[
+       {en:"Who is this man?",ru:"Кто этот мужчина?"},
+       {en:"Who wrote this program?",ru:"Кто написал эту программу?"}
+     ]}),
+     W('whom','[huːm]','кого, кому (официальное)',{note:'В разговорной речи вместо whom обычно говорят who.',examples:[
+       {en:"Whom did you see at the meeting?",ru:"Кого ты видел на встрече?"},
+       {en:"With whom did you speak?",ru:"С кем ты говорил?"}
+     ]}),
+     W('whose','[huːz]','чей',{examples:[
+       {en:"Whose book is this?",ru:"Чья это книга?"},
+       {en:"Whose idea was it?",ru:"Чья это была идея?"}
+     ]}),
+     W('which','[wɪtʃ]','который; какой (из нескольких)',{examples:[
+       {en:"Which colour do you like best?",ru:"Какой цвет тебе нравится больше всего?"},
+       {en:"Which of these two programs is faster?",ru:"Какая из этих двух программ быстрее?"}
+     ]}),
+     W('when','[wen]','когда',{examples:[
+       {en:"When does the lecture start?",ru:"Когда начинается лекция?"},
+       {en:"When did you finish the project?",ru:"Когда ты закончил проект?"}
+     ]}),
+     W('where','[weə]','где; куда',{examples:[
+       {en:"Where do you live?",ru:"Где ты живёшь?"},
+       {en:"Where is the computer room?",ru:"Где компьютерный класс?"}
+     ]}),
+     W('why','[waɪ]','почему',{examples:[
+       {en:"Why are you late?",ru:"Почему ты опоздал?"},
+       {en:"Why does the program not work?",ru:"Почему программа не работает?"}
+     ]}),
+     W('how','[haʊ]','как',{examples:[
+       {en:"How are you?",ru:"Как ты?"},
+       {en:"How do you spell your name?",ru:"Как пишется твоё имя?"}
+     ]}),
+     W('how much','[haʊ mʌtʃ]','сколько (с неисчисляемыми)',{examples:[
+       {en:"How much time do we have?",ru:"Сколько у нас времени?"},
+       {en:"How much does this book cost?",ru:"Сколько стоит эта книга?"}
+     ]}),
+     W('how many','[haʊ ˈmeni]','сколько (с исчисляемыми)',{examples:[
+       {en:"How many students are in your group?",ru:"Сколько студентов в твоей группе?"},
+       {en:"How many files did you copy?",ru:"Сколько файлов ты скопировал?"}
+     ]}),
+     W('how old','[haʊ əʊld]','сколько лет',{examples:[
+       {en:"How old are you?",ru:"Сколько тебе лет?"},
+       {en:"How old is this building?",ru:"Сколько лет этому зданию?"}
+     ]}),
+     W('how long','[haʊ lɒŋ]','как долго; какой длины',{examples:[
+       {en:"How long does the trip take?",ru:"Сколько длится поездка?"},
+       {en:"How long is this cable?",ru:"Какой длины этот кабель?"}
+     ]}),
+     W('what kind of','[wɒt kaɪnd əv]','какой, какого типа',{examples:[
+       {en:"What kind of data do you store?",ru:"Какие данные вы храните?"},
+       {en:"What kind of program are you writing?",ru:"Какую программу ты пишешь?"}
+     ]}),
+     W('at what time','[ət wɒt taɪm]','в какое время, во сколько',{examples:[
+       {en:"At what time does the lesson begin?",ru:"Во сколько начинается занятие?"},
+       {en:"At what time did you call?",ru:"В какое время ты позвонил?"}
+     ]})
+   ]}
+ ]},
  {id:'it',title:'IT-термины',sets:[
    {id:'paradigms',title:'Виды программирования',words:[
      W('linear programming','[ˈlɪniə ˈprəʊɡræmɪŋ]','линейное программирование',{examples:[
